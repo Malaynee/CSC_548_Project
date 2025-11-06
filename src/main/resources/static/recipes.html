@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipes</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- HEADER + NAV -->
+  <header>
+    <h1>Recipes</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ingredients.html">Ingredients</a></li>
+        <li><a href="recipes.html" class="active">Recipes</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="recipe-page">
+    <!-- SEARCH / FILTER SECTION -->
+    <div class="search-bar">
+      <input type="text" placeholder="Search recipes..." id="recipeSearch">
+      <select id="recipeFilter">
+        <option value="">Filter by cuisine</option>
+        <option>Italian</option>
+        <option>Mexican</option>
+        <option>Asian</option>
+        <option>Vegan</option>
+      </select>
+    </div>
+
+    <!-- RECIPE LIST -->
+    <section id="recipeList">
+      <!-- Recipes will later be dynamically inserted here via backend? -->
+    </section>
+
+    <!-- FORM: Add a new recipe -->
+    <section id="addRecipeSection">
+      <h2>Add a New Recipe</h2>
+      <form id="recipeForm">
+        <input type="text" id="recipeTitle" placeholder="Recipe title" required>
+        <textarea id="recipeInstructions" placeholder="Instructions..." rows="5"></textarea>
+        <input type="text" id="recipeCuisine" placeholder="Cuisine type (optional)">
+        <button type="submit">Save Recipe</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
