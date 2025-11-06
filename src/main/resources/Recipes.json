@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Spaghetti Bolognese",
+    "ingredients": [
+      { "name": "Spaghetti", "quantity": 200, "unit": "grams" },
+      { "name": "Ground Beef", "quantity": 250, "unit": "grams" },
+      { "name": "Tomato Sauce", "quantity": 1, "unit": "cup" },
+      { "name": "Onion", "quantity": 1, "unit": "medium" },
+      { "name": "Garlic", "quantity": 2, "unit": "cloves" }
+    ],
+    "instructions": "Cook spaghetti. Brown beef and onions. Add sauce. Combine and serve.",
+    "source": "Family Recipe",
+    "timeRequired": 30,
+    "cuisineType": "Italian"
+  },
+
+  {
+    "title": "Pancakes",
+    "ingredients": [
+      { "name": "Flour", "quantity": 1.5, "unit": "cups" },
+      { "name": "Milk", "quantity": 1.25, "unit": "cups" },
+      { "name": "Egg", "quantity": 1, "unit": "large" },
+      { "name": "Butter", "quantity": 2, "unit": "tbsp" }
+    ],
+    "instructions": "Mix all ingredients, cook on griddle until golden brown.",
+    "source": "Cookbook",
+    "timeRequired": 20,
+    "cuisineType": "Breakfast"
+  }
+]
