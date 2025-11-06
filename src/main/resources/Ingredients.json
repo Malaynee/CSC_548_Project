@@ -1,0 +1,24 @@
+[
+
+    {
+        "ingredient": "blueberry",
+        "quantity": "3",
+        "possible_units": ["cup", "cups", "berry", "berries"],
+        "name_variations": ["blueberries"]
+    },
+
+    {
+        "ingredient": "banana",
+        "quantity": "6",
+        "possible_units": ["cup", "cups", "slice", "slices", "banana", "bananas"],
+        "name_variations": ["bananas"]
+    },
+
+    {
+        "ingredient": "rice",
+        "quantity": "1",
+        "possible_units": ["cup", "cups", "teaspoon", "teaspoons", "tablespoon", "tablespoons", "tsp", "tbsp"],
+        "name_variations": ["N/A"]
+    }
+
+]
