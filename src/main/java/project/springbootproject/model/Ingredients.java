@@ -93,35 +93,4 @@ import java.io.BufferedWriter;
 	    	ingObj.ingredientsMap.put(ingredient, calculatableQuantity);	
 
 	    }
-	    
-
-//	    public void addQuantity(String quantity){
-//	    	
-//	    	Ingredients ingredientObject = new Ingredients();
-//	    	String numerator;
-//	    	String denominator;
-//	    	String[] fraction;
-//	    	
-//	    	int n;
-//	    	int d;
-//	    	
-//	    	double calculatableQuantity;
-//	    	
-//	    	if (quantity.contains("/")) {
-//	    		fraction = quantity.split("/");
-//	    		numerator = fraction[0];
-//	    		denominator = fraction[1];
-//	    		
-//	    		n = Integer.parseInt(numerator);
-//	    		d = Integer.parseInt(denominator);
-//	    		
-//	    		calculatableQuantity = n / d;	
-//	    		
-//	    		}	
-//	    	
-//	    	else {
-//	    		
-//	    		calculatableQuantity = Double.parseDouble(quantity);
-//	    	}
-//	    	}
 	    }
