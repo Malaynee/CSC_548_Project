@@ -41,11 +41,61 @@
     <section id="addRecipeSection">
       <h2>Add a New Recipe</h2>
       <form id="recipeForm">
-        <input type="text" id="recipeTitle" placeholder="Recipe title" required>
-        <textarea id="recipeInstructions" placeholder="Instructions..." rows="5"></textarea>
-        <input type="text" id="recipeCuisine" placeholder="Cuisine type (optional)">
+        <div class ="form-group">
+          <label for="recipeTitle">Recipe Title</label>
+          <input type="text" id="recipeTitle" name="title" required>
+        </div>
+
+        <div class ="form-group" id="ingredientsContainer">
+          <label>Ingredients:</label>
+          <div class="ingredient-entry">
+            <input type="text" name="ingredientName[]" placeholder="Ingredient Name" required>
+            <input type="number" name="ingredientQuantity[]" placeholder="Quantity" step="0.01" required>
+            <select name="ingredientUnit" required>
+              <option value="grams">grams</option>
+              <option value="cups">cups</option>
+              <option value="tbsp">tablespoons</option>
+              <option value="tsp">teaspoons</option>
+              <option value="pieces">pieces</option>
+            </select>
+            <button type="button" class="remove-ingredient">Remove</button>
+          </div>
+          <button type="button" id="addIngredient">Add Another Ingredient</button>
+        </div>
+        
+        <div class="form-group">
+          <label for="recipeInstructions">Instructions:</label>
+          <textarea id="recipeInstructions" name="instructions" rows="5" required></textarea>
+        </div>
+      
+        <div class="form-group">
+          <label for="recipeSource">Source:</label>
+          <input type="text" id="recipeSource" name="source">
+        </div>
+
+        <div class="form-group">
+          <label for="recipeTime">Time Required (minutes):</label>
+          <input type="number" id="recipeTime" name="timeRequired" min="1" required>
+        </div>
+
+        <div class="form-group">
+          <label for="recipeCuisine">Cuisine Type</label>
+          <select id="recipeCuisine" name="cuisineType" required>
+            <option value="">Select cuisine type ...</option>
+            <option value="Italian">Italian</option>
+            <option value="Mexian">Mexian</option>
+            <option value="Mexian">Mexian</option>
+            <option value="Asian">Asian</option>
+            <option value="American">American</option>
+            <option value="Indian">Indian</option>
+            <option value="Mediterranean">Mediterranean</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
         <button type="submit">Save Recipe</button>
       </form>
+      <div id="formMessage"></div>
     </section>
   </main>
 </body>
