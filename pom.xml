@@ -50,6 +50,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupID>com.fasterxml.jackson.core</groupID>
+			<artifactID>jackson-databind</artifactID>
+			<version>2.20.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
