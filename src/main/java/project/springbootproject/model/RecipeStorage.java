@@ -11,7 +11,9 @@ import com.google.gson.Gson;
  */
 public class RecipeStorage {
 
+    //File where recipes are stored
     private static final String FILE_PATH = "recipes.json";
+    // List to hold all recipes in memory
     private List<Recipe> recipes = new ArrayList<>();
 
     /**

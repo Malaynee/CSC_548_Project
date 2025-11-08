@@ -176,8 +176,8 @@ button[type="submit"]:hover { filter: brightness(0.95); }
 margin-top: 12px;
 padding: 10px;
 border-radius: 4px;
-display: none; / show only when used */
-}
+display: none; / show only when used
+}*/
 #formMessage.success {
 display: block;
 background-color: #e6f7ea;
