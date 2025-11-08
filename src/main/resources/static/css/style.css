@@ -105,3 +105,97 @@ footer {
 .login-container form input {
   width: 100%;
 }
+
+/*Recipe form style */
+/* Form layout and spacing */
+.form-group {
+margin-bottom: 1rem;
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
+}
+.form-group label {
+font-weight: 600;
+font-size: 0.95rem;
+}
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+padding: 8px 10px;
+border: 1px solid #cfcfcf;
+border-radius: 4px;
+font-size: 0.95rem;
+width: 100%;
+box-sizing: border-box;
+}
+
+/* Ingredient entry layout */
+.ingredient-entry {
+display: flex;
+gap: 8px;
+align-items: center;
+margin-bottom: 8px;
+}
+.ingredient-entry input,
+.ingredient-entry select {
+font-size: 0.9rem;
+padding: 6px 8px;
+}
+.ingredient-entry input[type="text"] { flex: 1 1 45%; min-width: 120px; }
+.ingredient-entry input[type="number"] { flex: 0 0 100px; max-width: 120px; }
+.ingredient-entry select { flex: 0 0 120px; max-width: 140px; }
+
+/* Remove button for ingredients */
+.remove-ingredient {
+background: #e74c3c;
+color: #fff;
+border: none;
+padding: 6px 8px;
+border-radius: 3px;
+cursor: pointer;
+}
+.remove-ingredient:hover { opacity: 0.95; }
+
+/* Add / Save buttons */
+button#addIngredient,
+button[type="submit"] {
+background: #2d9cdb;
+color: #fff;
+border: none;
+padding: 8px 12px;
+border-radius: 4px;
+cursor: pointer;
+font-weight: 600;
+}
+button#addIngredient { background: #6aa0d7; margin-top: 6px; }
+button[type="submit"]:hover { filter: brightness(0.95); }
+
+/* Form message area /
+#formMessage {
+margin-top: 12px;
+padding: 10px;
+border-radius: 4px;
+display: none; / show only when used */
+}
+#formMessage.success {
+display: block;
+background-color: #e6f7ea;
+color: #1f7a3a;
+border: 1px solid #cde9d0;
+}
+#formMessage.error {
+display: block;
+background-color: #fff0f0;
+color: #a12b2b;
+border: 1px solid #f1c7c7;
+}
+/* Responsive tweaks */
+@media (max-width: 600px) {
+.ingredient-entry { flex-direction: column; align-items: stretch; }
+.ingredient-entry input[type="number"],
+.ingredient-entry select { max-width: 100%; flex: 1 1 auto; }
+button#addIngredient,
+button[type="submit"] { width: 100%; }
+}
+
