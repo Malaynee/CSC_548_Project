@@ -44,21 +44,18 @@ import java.io.BufferedWriter;
 	    		String userIngredient = userInput.nextLine();
 	    		System.out.println("What quantity do you have of this ingredient?");
 	    		String ingredientQuantity = userInput.nextLine();
+				System.out.println("What is the unit this ingredient uses (ex: cups, oz, tbsp, tsp, etc.)");
+				String unit = userInput.nextLine(); 
+
+				ObjectMapper objectMapper = new ObjectMapper();
+				//Need to test for if this works when we don't ask the user for alternative ingredient names - but for now, just implementing basic functionality.
+				Ingredients userEntry = new Ingredients(userIngredient, ingredientQuantity, unit);
+				objectMapper.writeValue(new File ("src/main/resources/Ingredients.json"), userEntry);
 	    		
 	    		if (!ingredientsMap.containsKey(userIngredient)) {
 	    			ingredientsMap.addIngredientWithQuantity(userIngredient, ingredientQuantity);
 	    		}	
 	    	}
-	    	
-	    	
-//			INITIAL TEST	    	
-//	    	ingredients.add("rice");
-//	    	ingredients.add("oats");
-//	    	ingredients.add("apples");
-//	    	
-//	    	System.out.println("Ingredients List: "+ ingredients.toString());
-
-
 	    }
 
 
