@@ -3,6 +3,7 @@ package project.springbootproject.model;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors; // for filtering lists easier
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -52,5 +53,22 @@ public class RecipeStorage {
     public void removeRecipe(Recipe recipe) {
         recipes.remove(recipe);
         saveRecipes();
+    }
+
+    /**
+     * Filters recipes by cuisine type:
+     * - Used by the Thymeleaf controller to show only recipes of a specific cuisine
+     * - Example: getRecipesByCuisine("Italian") -> returns only Italian recipes
+     * - Ignores case (ex "italian" and "Italian" both work)
+     */
+    public List<Recipe> getRecipesByCuisine(String cuisine) {
+        if (recipes == null || recipes.isEmpty()) {
+            return Collections.emptyList(); // No recipes loaded
+        }
+        // Filter recipes by matching cuisine
+        return recipes.stream()
+                .filter(recipe -> recipe.getCuisine() != null &&
+                                  recipe.getCuisine().equalsIgnoreCase(cuisine))
+                .collect(Collectors.toList());
     }
 }
