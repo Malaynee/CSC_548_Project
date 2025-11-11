@@ -4,45 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recipes</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/recipes.js" defer></script>
+  <link rel="stylesheet" th:href="@{/css/style.css}"> <!-- Thymeleaf syntax -->
+  <script th:src="@{/js/recipes.js}" defer></script>
 </head>
 <body>
   <!-- HEADER + NAV -->
   <header>
     <h1>Recipes</h1>
     <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="ingredients.html">Ingredients</a></li>
-        <li><a href="recipes.html" class="active">Recipes</a></li>
+        <ul>
+        <!-- changed to th:href so links remain correct when served from Spring -->
+        <li><a th:href="@{/}">Home</a></li> 
+        <li><a th:href="@{/ingredients}">Ingredients</a></li>
+        <li><a th:href="@{/recipes}" class="active">Recipes</a></li>
       </ul>
     </nav>
   </header>
 
   <main class="recipe-page">
-    <!-- SEARCH / FILTER SECTION -->
     <div class="search-bar">
+      <!-- Basic search input -->
       <input type="text" placeholder="Search recipes..." id="recipeSearch">
-      <select id="recipeFilter">
-        <option value="">Filter by cuisine</option>
-        <option>Italian</option>
-        <option>Mexican</option>
-        <option>Asian</option>
-        <option>Vegan</option>
-      </select>
+      <!-- Dropdown filter for cuisine type -->
+      <!-- Form should auto-submit when changed (calls controller /recipes?cuisine=XYZ) -->
+      <form method="get" th:action="@{/recipes}">
+        <select name="cuisine" id="recipeFilter" onchange="this.form.submit()">
+          <option value="">Filter by cuisine</option>
+          <option>Italian</option>
+          <option>Mexican</option>
+          <option>Asian</option>
+          <option>Vegan</option>
+        </select>
+      </form>
     </div>
 
     <!-- RECIPE LIST -->
     <section id="recipeList">
-      <!-- Recipes will later be dynamically inserted here via backend? -->
+      <!-- 
+        Thymeleaf section: dynamically generates HTML for each recipe
+        "${recipes}" comes from RecipeViewController (model.addAttribute("recipes", ...))
+      -->
+      <div th:if="${#lists.isEmpty(recipes)}">
+        <p>No recipes found!</p>
+      </div>
+
+      <div th:each="recipe : ${recipes}" class="recipe-card">
+        <h3 th:text="${recipe.name}">Recipe Name</h3>
+        <p><strong>Cuisine:</strong> <span th:text="${recipe.cuisine}">Cuisine</span></p>
+        <p><strong>Time Required:</strong> <span th:text="${recipe.timeRequired}">0</span> minutes</p>
+        <p><strong>Source:</strong> <span th:text="${recipe.source}">N/A</span></p>
+
+        <!-- Optional(?): list ingredients -->
+        <ul>
+          <li th:each="ingredient : ${recipe.ingredients}" 
+              th:text="${ingredient.name + ' - ' + ingredient.quantity + ' ' + ingredient.unit}">
+              Ingredient goes here
+          </li>
+        </ul>
+      </div>
     </section>
 
-    <!-- FORM: Add a new recipe -->
+    <!-- FORM: Add a new recipe (optional: can later POST to /api/recipes) -->
     <section id="addRecipeSection">
       <h2>Add a New Recipe</h2>
+      <!-- For now, this form doesn't connect to Spring yet (will add to a @PostMapping controller method) -->
       <form id="recipeForm">
-        <div class ="form-group">
+        <div class="form-group">
           <label for="recipeTitle">Recipe Title</label>
           <input type="text" id="recipeTitle" name="title" required>
         </div>
