@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,9 +19,10 @@
     </nav>
   </header>
 
-  <main class="ingredient-page">
-    <!-- TABLE: Displays current ingredients -->
+   <main class="ingredient-page">
     <h2>Current Ingredients</h2>
+    <!-- Table automatically filled with data from IngredientViewController
+    <!-- Controller adds "ingredients" into the model; model.addAttribute("ingredients", storage.getIngredients()); -->
     <table id="ingredientTable">
       <thead>
         <tr>
@@ -31,11 +32,21 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Later, Spring Boot or JavaScript should hopefully populate this table dynamically -->
+        <!-- If no ingredients exist -->
+        <tr th:if="${#lists.isEmpty(ingredients)}">
+          <td colspan="3">No ingredients in pantry!</td>
+        </tr>
+        <!-- Loop through each ingredient -->
+        <tr th:each="ingredient : ${ingredients}">
+          <td th:text="${ingredient.name}">Name</td>
+          <td th:text="${ingredient.quantity}">0</td>
+          <td th:text="${ingredient.unit}">unit</td>
+        </tr>
       </tbody>
     </table>
 
     <!-- FORM: Add new ingredient to list!! -->
+    <!-- Not connected to Spring controller (still static) -> will  change this to POST to /api/ingredients -->
     <h3>Add a New Ingredient</h3>
     <form id="ingredientForm">
       <input type="text" id="ingredientName" placeholder="Name" required>
