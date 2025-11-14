@@ -22,21 +22,24 @@ public class RecipeViewController {
      * Example URLs:
      *  - /recipes -> shows all recipes
      *  - /recipes?cuisine=Italian -> shows only Italian recipes
+     *  - /recipes?diet=vegetarian -> shows only vegetarian recipes
+     *  - /recipes?cuisine=Italian&diet=vegan -> shows Italian vegan recipes
      */
     @GetMapping("/recipes")
-    public String viewRecipes(@RequestParam(required = false) String cuisine, Model model) {
+    public String viewRecipes(
+            @RequestParam(required = false) String cuisine,
+            @RequestParam(required = false) String diet,
+            Model model) {
+        
         // Load or refresh the recipe data
         storage.loadRecipes();
-        // Check if a cuisine filter was provided
-        if (cuisine != null && !cuisine.isEmpty()) {
-            // Custom method filters recipes by cuisine type
-            model.addAttribute("recipes", storage.getRecipesByCuisine(cuisine));
-        } else {
-            // No filter -> show all recipes
-            model.addAttribute("recipes", storage.getRecipes());
-        }
-        // The key "recipes" is now available inside recipes.html
-        // Return the name of the template to render
+        // Apply filters (both, one, or none)
+        model.addAttribute("recipes", storage.getFilteredRecipes(cuisine, diet));
+        // Pass available cuisine types for the dropdown
+        model.addAttribute("cuisineTypes", storage.getAllCuisineTypes());
+        // Pass current filter values back to the view to maintain selection
+        model.addAttribute("selectedCuisine", cuisine != null ? cuisine : "all");
+        model.addAttribute("selectedDiet", diet != null ? diet : "none");
         return "recipes";
     }
 }
