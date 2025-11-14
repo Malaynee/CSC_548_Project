@@ -54,6 +54,8 @@ button {
   border-radius: 5px;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease; /* Added smooth transition */
 }
 
 button:hover {
@@ -71,6 +73,7 @@ textarea {
   width: 100%;
   max-width: 400px;
   display: block;
+  font-family: inherit; /* Added to match body font */
 }
 
 /* TABLES */
@@ -78,6 +81,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin: 1rem 0;
+  max-width: 800px; /* Added max-width for better readability */
 }
 
 th,
@@ -85,6 +89,11 @@ td {
   border: 1px solid #ddd;
   padding: 0.5rem;
   text-align: left;
+}
+
+th {
+  background-color: #f5f5f5; /* Added header background */
+  font-weight: 600;
 }
 
 /* FOOTER */
@@ -106,7 +115,62 @@ footer {
   width: 100%;
 }
 
-/*Recipe form style */
+/* RECIPE CARD STYLES */
+.recipe-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s ease;
+}
+.recipe-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.recipe-card h3 {
+  margin-top: 0;
+  color: #ff7b00;
+}
+.recipe-card ul {
+  padding-left: 1.5rem;
+}
+
+/* Dietary tags */
+.diet-tag {
+  display: inline-block;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+}
+
+/* SEARCH BAR STYLES */
+.search-bar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.search-bar input {
+  flex: 1;
+  min-width: 200px;
+  margin: 0;
+}
+.search-bar select {
+  margin: 0;
+  width: auto;
+  max-width: 200px;
+}
+.search-bar form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 /* Form layout and spacing */
 .form-group {
 margin-bottom: 1rem;
@@ -128,6 +192,7 @@ border-radius: 4px;
 font-size: 0.95rem;
 width: 100%;
 box-sizing: border-box;
+margin: 0; /* reset margin for form inputs */
 }
 
 /* Ingredient entry layout */
@@ -141,10 +206,20 @@ margin-bottom: 8px;
 .ingredient-entry select {
 font-size: 0.9rem;
 padding: 6px 8px;
+margin: 0;
 }
-.ingredient-entry input[type="text"] { flex: 1 1 45%; min-width: 120px; }
-.ingredient-entry input[type="number"] { flex: 0 0 100px; max-width: 120px; }
-.ingredient-entry select { flex: 0 0 120px; max-width: 140px; }
+.ingredient-entry input[type="text"] { 
+  flex: 1 1 45%; 
+  min-width: 120px; 
+}
+.ingredient-entry input[type="number"] { 
+  flex: 0 0 100px; 
+  max-width: 120px; 
+}
+.ingredient-entry select { 
+  flex: 0 0 120px; 
+  max-width: 140px; 
+}
 
 /* Remove button for ingredients */
 .remove-ingredient {
@@ -171,13 +246,14 @@ font-weight: 600;
 button#addIngredient { background: #6aa0d7; margin-top: 6px; }
 button[type="submit"]:hover { filter: brightness(0.95); }
 
-/* Form message area /
+/* Form message area */
 #formMessage {
-margin-top: 12px;
-padding: 10px;
-border-radius: 4px;
-display: none; / show only when used
-}*/
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 4px;
+  display: none; /* Hidden by default, shown by JS */
+  font-weight: 500;
+}
 #formMessage.success {
 display: block;
 background-color: #e6f7ea;
@@ -190,12 +266,57 @@ background-color: #fff0f0;
 color: #a12b2b;
 border: 1px solid #f1c7c7;
 }
-/* Responsive tweaks */
-@media (max-width: 600px) {
-.ingredient-entry { flex-direction: column; align-items: stretch; }
-.ingredient-entry input[type="number"],
-.ingredient-entry select { max-width: 100%; flex: 1 1 auto; }
-button#addIngredient,
-button[type="submit"] { width: 100%; }
+
+/* HOME PAGE STYLES */
+.home-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.welcome {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.quick-actions button {
+  min-width: 200px;
+}
+.quick-actions a {
+  text-decoration: none;
 }
 
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-bar input,
+  .search-bar select {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .ingredient-entry { 
+    flex-direction: column; 
+    align-items: stretch; 
+  }
+  .ingredient-entry input[type="number"],
+  .ingredient-entry select { 
+    max-width: 100%; 
+    flex: 1 1 auto; 
+  }
+  button#addIngredient,
+  button[type="submit"] { 
+    width: 100%; 
+  }
+}
