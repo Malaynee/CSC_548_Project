@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Pantry</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
   <!-- HEADER + NAV BAR -->
@@ -12,17 +12,17 @@
     <h1>Your Pantry</h1>
     <nav>
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="ingredients.html" class="active">Ingredients</a></li>
-        <li><a href="recipes.html">Recipes</a></li>
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/ingredients}" class="active">Ingredients</a></li>
+        <li><a th:href="@{/recipes}">Recipes</a></li>
       </ul>
     </nav>
   </header>
-
-   <main class="ingredient-page">
+  
+  <main class="ingredient-page">
     <h2>Current Ingredients</h2>
-    <!-- Table automatically filled with data from IngredientViewController
-    <!-- Controller adds "ingredients" into the model; model.addAttribute("ingredients", storage.getIngredients()); -->
+    
+    <!-- Table automatically filled with data from IngredientViewController -->
     <table id="ingredientTable">
       <thead>
         <tr>
@@ -44,9 +44,8 @@
         </tr>
       </tbody>
     </table>
-
-    <!-- FORM: Add new ingredient to list!! -->
-    <!-- Not connected to Spring controller (still static) -> will  change this to POST to /api/ingredients -->
+    
+    <!-- FORM: Add new ingredient -->
     <h3>Add a New Ingredient</h3>
     <form id="ingredientForm">
       <input type="text" id="ingredientName" placeholder="Name" required>
@@ -54,6 +53,48 @@
       <input type="text" id="ingredientUnit" placeholder="Unit (e.g., cups, g)" required>
       <button type="submit">Add Ingredient</button>
     </form>
+    <div id="formMessage"></div>
   </main>
+
+  <script>
+    // Handle form submission via AJAX to POST to /api/ingredients
+    document.getElementById('ingredientForm').addEventListener('submit', function(e) {
+
+      // makes it so the form will update the page without needing to refresh
+      e.preventDefault();
+
+      // creates JavaScript object that matches ingredient Java class structure
+      const ingredient = {
+        name: document.getElementById('ingredientName').value,
+        quantity: parseFloat(document.getElementById('ingredientQty').value),
+        unit: document.getElementById('ingredientUnit').value
+      };
+
+      // HTTP request from JavaScript
+      fetch('/api/ingredients', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // JavaScript object -> JSON string (for transmission over the network)
+        body: JSON.stringify(ingredient)
+      })
+      .then(response => {
+        if (response.ok) {
+          document.getElementById('formMessage').textContent = 'Ingredient added successfully!';
+          document.getElementById('formMessage').style.color = 'green';
+          // Reload page to show new ingredient
+          // setTimeout gives user time to see the success message before the page reloads!
+          setTimeout(() => location.reload(), 1000);
+        } else {
+          throw new Error('Failed to add ingredient');
+        }
+      })
+      .catch(error => {
+        document.getElementById('formMessage').textContent = 'Error: ' + error.message;
+        document.getElementById('formMessage').style.color = 'red';
+      });
+    });
+  </script>
 </body>
 </html>
