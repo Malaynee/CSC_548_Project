@@ -11,19 +11,23 @@ public class Recipe {
     private String source;
     private int timeRequired;
     private String cuisineType;
+    private boolean thumbsUpRating;
+    private boolean thumbsDownRating;
 
     // No-arg constructor for Gson
     public Recipe() {
         this.ingredients = new ArrayList<>();
     }
     
-    public Recipe(String title, List<Ingredient> ingredients, String instructions, String source, int timeRequired, String cuisineType) {
+    public Recipe(String title, List<Ingredient> ingredients, String instructions, String source, int timeRequired, String cuisineType, boolean thumbsUpRating, boolean thumbsDownRating) {
         this.title = title;
         this.ingredients = ingredients;
         this.instructions = instructions;
         this.source = source;
         this.timeRequired = timeRequired;
         this.cuisineType = cuisineType;
+        this.thumbsUpRating = thumbsUpRating;
+        this.thumbsDownRating = thumbsDownRating;
     }
 
     public String getTitle() {
@@ -48,6 +52,22 @@ public class Recipe {
 
     public String getCuisineType() {
         return cuisineType;
+    }
+
+    public boolean getThumbsUpRating(){
+        return thumbsUpRating;
+    }
+
+    public boolean getThumbsDownRating(){
+        return thumbsDownRating;
+    }
+
+    public void setThumbsUpRating(){
+        this.thumbsUpRating = thumbsUpRating;
+    }
+
+    public void setThumbsDownRating(){
+        this.thumbsDownRating = thumbsDownRating;
     }
 
     public boolean hasIngredient(Ingredient ingredient){
