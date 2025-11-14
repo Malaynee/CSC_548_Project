@@ -11,7 +11,6 @@ import com.google.gson.Gson;
  * RecipeStorage class handles reading and writing recipes to a JSON file
  */
 public class RecipeStorage {
-
     //File where recipes are stored
     private static final String FILE_PATH = "recipes.json";
     // List to hold all recipes in memory
@@ -24,6 +23,9 @@ public class RecipeStorage {
     public void loadRecipes() {
         try (Reader reader = new FileReader(FILE_PATH)) {
             recipes = new Gson().fromJson(reader, new TypeToken<List<Recipe>>(){}.getType());
+            if (recipes == null) {
+                recipes = new ArrayList<>();
+            }
         } catch (IOException e) {
             recipes = new ArrayList<>();
         }
@@ -63,12 +65,78 @@ public class RecipeStorage {
      */
     public List<Recipe> getRecipesByCuisine(String cuisine) {
         if (recipes == null || recipes.isEmpty()) {
-            return Collections.emptyList(); // No recipes loaded
+            return Collections.emptyList();
         }
-        // Filter recipes by matching cuisine
         return recipes.stream()
-                .filter(recipe -> recipe.getCuisine() != null &&
-                                  recipe.getCuisine().equalsIgnoreCase(cuisine))
+                .filter(recipe -> recipe.getCuisineType() != null &&
+                                  recipe.getCuisineType().equalsIgnoreCase(cuisine))
+                .collect(Collectors.toList());
+    }
+
+    // Filters recipes by dietary restriction
+    public List<Recipe> getRecipesByDietaryRestriction(String restriction) {
+        if (recipes == null || recipes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        if (restriction == null || restriction.equalsIgnoreCase("none")) {
+            return new ArrayList<>(recipes);
+        }
+        return recipes.stream()
+                .filter(recipe -> {
+                    if (restriction.equalsIgnoreCase("vegan")) {
+                        return recipe.isVegan();
+                    } else if (restriction.equalsIgnoreCase("vegetarian")) {
+                        return recipe.isVegetarian();
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Filters recipes by both cuisine and dietary restriction!!
+     * (pass null or empty string to skip a filter)
+     */
+    public List<Recipe> getFilteredRecipes(String cuisine, String dietaryRestriction) {
+        if (recipes == null || recipes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return recipes.stream()
+                .filter(recipe -> {
+                    // Cuisine filter
+                    boolean cuisineMatch = (cuisine == null || cuisine.isEmpty() || 
+                                           cuisine.equalsIgnoreCase("all") ||
+                                           (recipe.getCuisineType() != null && 
+                                            recipe.getCuisineType().equalsIgnoreCase(cuisine)));
+                    // Dietary restriction filter
+                    boolean dietMatch = true;
+                    if (dietaryRestriction != null && !dietaryRestriction.isEmpty() && 
+                        !dietaryRestriction.equalsIgnoreCase("none")) {
+                        if (dietaryRestriction.equalsIgnoreCase("vegan")) {
+                            dietMatch = recipe.isVegan();
+                        } else if (dietaryRestriction.equalsIgnoreCase("vegetarian")) {
+                            dietMatch = recipe.isVegetarian();
+                        }
+                    }
+                    return cuisineMatch && dietMatch;
+                })
+                .collect(Collectors.toList());
+    }
+    
+    /**
+     * Gets all unique cuisine types from loaded recipes
+     * (Could use for populating dropdown menu(s)?
+     */
+    public List<String> getAllCuisineTypes() {
+        if (recipes == null || recipes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        return recipes.stream()
+                .map(Recipe::getCuisineType)
+                .filter(Objects::nonNull)
+                .distinct()
+                .sorted()
                 .collect(Collectors.toList());
     }
 }
