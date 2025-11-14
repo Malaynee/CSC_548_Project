@@ -10,6 +10,7 @@ public class Recipe {
     private String instructions;
     private String source;
     private int timeRequired;
+    private String timeUnit;
     private String cuisineType;
     private boolean thumbsUpRating;
     private boolean thumbsDownRating;
@@ -19,15 +20,44 @@ public class Recipe {
         this.ingredients = new ArrayList<>();
     }
     
-    public Recipe(String title, List<Ingredient> ingredients, String instructions, String source, int timeRequired, String cuisineType, boolean thumbsUpRating, boolean thumbsDownRating) {
+    public Recipe(String title, List<Ingredient> ingredients, String instructions, String source, int timeRequired, String timeUnit, String cuisineType, boolean thumbsUpRating, boolean thumbsDownRating) {
         this.title = title;
         this.ingredients = ingredients;
         this.instructions = instructions;
         this.source = source;
         this.timeRequired = timeRequired;
+        this.timeUnit = timeUnit;
         this.cuisineType = cuisineType;
         this.thumbsUpRating = thumbsUpRating;
         this.thumbsDownRating = thumbsDownRating;
+    }
+
+    public void setTitle(){
+        this.title = title;
+    }
+
+    public void setIngredients(){
+        this.ingredients = ingredients;
+    }
+
+    public void setInstructions(){
+        this.instructions = instructions;
+    }
+
+    public void setSource(){
+        this.source = source;
+    }
+
+    public void setTimeRequired(){
+        this.timeRequired = timeRequired;
+    }
+
+    public void setTimeUnit(){
+        this.timeUnit = timeUnit;
+    }
+
+    public void setCuisineType(){
+        this.cuisineType = cuisineType;
     }
 
     public String getTitle() {
@@ -48,6 +78,10 @@ public class Recipe {
 
     public int getTimeRequired() {
         return timeRequired;
+    }
+
+    public String getTimeUnit(){
+        return timeUnit;
     }
 
     public String getCuisineType() {
