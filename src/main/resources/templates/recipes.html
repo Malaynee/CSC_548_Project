@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipes</title>
+  
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <script th:src="@{/js/recipes.js}" defer></script>
+</head>
+<body>
+  <!-- HEADER + NAV -->
+  <header>
+    <h1>Recipes</h1>
+    <nav>
+      <ul>
+        <li><a th:href="@{/}">Home</a></li> 
+        <li><a th:href="@{/ingredients}">Ingredients</a></li>
+        <li><a th:href="@{/recipes}" class="active">Recipes</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="recipe-page">
+    <div class="search-bar">
+      <!-- Basic search input -->
+      <input type="text" placeholder="Search recipes..." id="recipeSearch">
+      
+      <!-- FILTER FORM: Cuisine Type + Dietary Restrictions -->
+      <form method="get" th:action="@{/recipes}">
+        <!-- Cuisine Filter Dropdown -->
+        <select name="cuisine" id="cuisineFilter" onchange="this.form.submit()">
+          <option value="all" th:selected="${selectedCuisine == 'all'}">All Cuisines</option>
+          <option th:each="type : ${cuisineTypes}" 
+                  th:value="${type}" 
+                  th:text="${type}"
+                  th:selected="${type == selectedCuisine}">
+          </option>
+        </select>
+        
+        <!-- Dietary Restriction Filter -->
+        <select name="diet" id="dietFilter" onchange="this.form.submit()">
+          <option value="none" th:selected="${selectedDiet == 'none'}">No Dietary Filter</option>
+          <option value="vegetarian" th:selected="${selectedDiet == 'vegetarian'}">Vegetarian</option>
+          <option value="vegan" th:selected="${selectedDiet == 'vegan'}">Vegan</option>
+        </select>
+      </form>
+    </div>
+
+    <!-- RECIPE LIST -->
+    <section id="recipeList">
+      <!-- Show message if no recipes found -->
+      <div th:if="${#lists.isEmpty(recipes)}">
+        <p>No recipes found matching your criteria!</p>
+      </div>
+
+      <!-- Display each recipe -->
+      <div th:each="recipe : ${recipes}" class="recipe-card">
+        <h3 th:text="${recipe.title}">Recipe Name</h3>
+        <p><strong>Cuisine:</strong> <span th:text="${recipe.cuisineType}">Cuisine</span></p>
+        <p><strong>Time Required:</strong> <span th:text="${recipe.timeRequired}">0</span> minutes</p>
+        <p><strong>Source:</strong> <span th:text="${recipe.source}">N/A</span></p>
+        
+        <!-- Show dietary info -->
+        <p>
+          <strong>Dietary:</strong> 
+          <span th:if="${recipe.vegan}" class="diet-tag">🌱 Vegan</span>
+          <span th:if="${!recipe.vegan && recipe.vegetarian}" class="diet-tag">🥬 Vegetarian</span>
+        </p>
+
+        <!-- Ingredients list -->
+        <h4>Ingredients:</h4>
+        <ul>
+          <li th:each="ingredient : ${recipe.ingredients}" 
+              th:text="${ingredient.quantity + ' ' + ingredient.unit + ' ' + ingredient.name}">
+              Ingredient goes here
+          </li>
+        </ul>
+        
+        <!-- Instructions -->
+        <p><strong>Instructions:</strong> <span th:text="${recipe.instructions}">Instructions here</span></p>
+      </div>
+    </section>
+
+    <!-- FORM: Add a new recipe -->
+    <section id="addRecipeSection">
+      <h2>Add a New Recipe</h2>
+      <!-- This form will POST to /api/recipes via JavaScript -->
+      <form id="recipeForm">
+        <div class="form-group">
+          <label for="recipeTitle">Recipe Title</label>
+          <input type="text" id="recipeTitle" name="title" required>
+        </div>
+
+        <div class="form-group" id="ingredientsContainer">
+          <label>Ingredients:</label>
+          <div class="ingredient-entry">
+            <input type="text" name="ingredientName[]" placeholder="Ingredient Name" required>
+            <input type="number" name="ingredientQuantity[]" placeholder="Quantity" step="0.01" required>
+            <select name="ingredientUnit[]" required>
+              <option value="grams">grams</option>
+              <option value="cups">cups</option>
+              <option value="tbsp">tablespoons</option>
+              <option value="tsp">teaspoons</option>
+              <option value="pieces">pieces</option>
+              <option value="oz">ounces</option>
+              <option value="lb">pounds</option>
+            </select>
+            <button type="button" class="remove-ingredient">Remove</button>
+          </div>
+          <button type="button" id="addIngredient">Add Another Ingredient</button>
+        </div>
+        
+        <div class="form-group">
+          <label for="recipeInstructions">Instructions:</label>
+          <textarea id="recipeInstructions" name="instructions" rows="5" required></textarea>
+        </div>
+      
+        <div class="form-group">
+          <label for="recipeSource">Source:</label>
+          <input type="text" id="recipeSource" name="source">
+        </div>
+
+        <div class="form-group">
+          <label for="recipeTime">Time Required (minutes):</label>
+          <input type="number" id="recipeTime" name="timeRequired" min="1" required>
+        </div>
+
+        <div class="form-group">
+          <label for="recipeCuisine">Cuisine Type</label>
+          <select id="recipeCuisine" name="cuisineType" required>
+            <option value="">Select cuisine type...</option>
+            <option value="Italian">Italian</option>
+            <option value="Mexican">Mexican</option>
+            <option value="Asian">Asian</option>
+            <option value="American">American</option>
+            <option value="Indian">Indian</option>
+            <option value="Mediterranean">Mediterranean</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <button type="submit">Save Recipe</button>
+      </form>
+      <div id="formMessage"></div>
+    </section>
+  </main>
+</body>
+</html>

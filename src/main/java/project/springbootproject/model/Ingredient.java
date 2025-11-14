@@ -22,6 +22,10 @@ public class Ingredient {
     private double quantity;
     private String unit;
 
+    // No-arg constructor for Json
+    public Ingredient() {
+    }
+    
     public Ingredient(String name, double quantity, String unit) {
         this.name = name;
         this.quantity = quantity;
@@ -39,6 +43,9 @@ public class Ingredient {
       return unit; 
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
     public void setQuantity(double quantity) {
       this.quantity = quantity; 
     }

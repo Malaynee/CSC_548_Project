@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Project | Home</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+  <!-- HEADER SECTION: Title + Navigation bar -->
+  <header>
+    <h1>🍳 Recipe Manager</h1>
+    <nav>
+      <ul>
+        <li><a th:href="@{/}" class="active">Home</a></li>
+        <li><a th:href="@{/ingredients}">Ingredients</a></li>
+        <li><a th:href="@{/recipes}">Recipes</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <!-- MAIN CONTENT: Welcome message + Quick buttons -->
+  <main class="home-content">
+    <section class="welcome">
+      <h2>Welcome to Your Recipe Manager!</h2>
+      <p>Manage your pantry, explore recipes, and create your own culinary masterpieces.</p>
+    </section>
+    
+    <section class="quick-actions">
+      <a th:href="@{/ingredients}">
+        <button id="addIngredientBtn">➕ Manage Ingredients</button>
+      </a>
+      <a th:href="@{/recipes}">
+        <button id="addRecipeBtn">🍲 View Recipes</button>
+      </a>
+      
+      <!-- Quick search (redirects to recipes page) -->
+      <form method="get" th:action="@{/recipes}">
+        <input type="text" name="search" id="searchBar" placeholder="Search for recipes...">
+        <select name="cuisine" id="filterCuisine">
+          <option value="all">All Cuisines</option>
+          <option value="Mexican">Mexican</option>
+          <option value="Italian">Italian</option>
+          <option value="Asian">Asian</option>
+          <option value="American">American</option>
+          <option value="Breakfast">Breakfast</option>
+        </select>
+        <button type="submit">Search</button>
+      </form>
+    </section>
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Recipe Manager | Created for Software Engineering CSC 548</p>
+  </footer>
+</body>
+</html>
