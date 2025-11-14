@@ -1,24 +1,32 @@
 [
-
-    {
-        "ingredient": "blueberry",
-        "quantity": "3",
-        "possible_units": ["cup", "cups", "berry", "berries"],
-        "name_variations": ["blueberries"]
-    },
-
-    {
-        "ingredient": "banana",
-        "quantity": "6",
-        "possible_units": ["cup", "cups", "slice", "slices", "banana", "bananas"],
-        "name_variations": ["bananas"]
-    },
-
-    {
-        "ingredient": "rice",
-        "quantity": "1",
-        "possible_units": ["cup", "cups", "teaspoon", "teaspoons", "tablespoon", "tablespoons", "tsp", "tbsp"],
-        "name_variations": ["N/A"]
-    }
-
+  {
+    "name": "Blueberry",
+    "quantity": 3.0,
+    "unit": "cups"
+  },
+  {
+    "name": "Banana",
+    "quantity": 6.0,
+    "unit": "whole"
+  },
+  {
+    "name": "Rice",
+    "quantity": 1.0,
+    "unit": "cup"
+  },
+  {
+    "name": "Flour",
+    "quantity": 2.5,
+    "unit": "cups"
+  },
+  {
+    "name": "Sugar",
+    "quantity": 1.0,
+    "unit": "cup"
+  },
+  {
+    "name": "Eggs",
+    "quantity": 12.0,
+    "unit": "whole"
+  }
 ]
