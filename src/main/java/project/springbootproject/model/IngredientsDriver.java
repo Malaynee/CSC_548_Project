@@ -23,7 +23,7 @@ import java.io.BufferedWriter;
 /**
  * @author Catherine Larson
  */
-	public class IngredientsDriver{
+	public class Ingredients{
 		
 		public static HashMap<String, Double> ingredientsMap;
 		
