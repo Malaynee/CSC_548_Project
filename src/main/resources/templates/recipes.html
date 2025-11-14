@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recipes</title>
   
-  <link rel="stylesheet" th:href="@{/css/style.css}"> <!-- Thymeleaf syntax -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
   <script th:src="@{/js/recipes.js}" defer></script>
 </head>
 <body>
@@ -13,8 +13,7 @@
   <header>
     <h1>Recipes</h1>
     <nav>
-        <ul>
-        <!-- changed to th:href so links remain correct when served from Spring -->
+      <ul>
         <li><a th:href="@{/}">Home</a></li> 
         <li><a th:href="@{/ingredients}">Ingredients</a></li>
         <li><a th:href="@{/recipes}" class="active">Recipes</a></li>
@@ -26,66 +25,86 @@
     <div class="search-bar">
       <!-- Basic search input -->
       <input type="text" placeholder="Search recipes..." id="recipeSearch">
-      <!-- Dropdown filter for cuisine type -->
-      <!-- Form should auto-submit when changed (calls controller /recipes?cuisine=XYZ) -->
+      
+      <!-- FILTER FORM: Cuisine Type + Dietary Restrictions -->
       <form method="get" th:action="@{/recipes}">
-        <select name="cuisine" id="recipeFilter" onchange="this.form.submit()">
-          <option value="">Filter by cuisine</option>
-          <option>Italian</option>
-          <option>Mexican</option>
-          <option>Asian</option>
-          <option>Vegan</option>
+        <!-- Cuisine Filter Dropdown -->
+        <select name="cuisine" id="cuisineFilter" onchange="this.form.submit()">
+          <option value="all" th:selected="${selectedCuisine == 'all'}">All Cuisines</option>
+          <option th:each="type : ${cuisineTypes}" 
+                  th:value="${type}" 
+                  th:text="${type}"
+                  th:selected="${type == selectedCuisine}">
+          </option>
+        </select>
+        
+        <!-- Dietary Restriction Filter -->
+        <select name="diet" id="dietFilter" onchange="this.form.submit()">
+          <option value="none" th:selected="${selectedDiet == 'none'}">No Dietary Filter</option>
+          <option value="vegetarian" th:selected="${selectedDiet == 'vegetarian'}">Vegetarian</option>
+          <option value="vegan" th:selected="${selectedDiet == 'vegan'}">Vegan</option>
         </select>
       </form>
     </div>
 
     <!-- RECIPE LIST -->
     <section id="recipeList">
-      <!-- 
-        Thymeleaf section: dynamically generates HTML for each recipe
-        "${recipes}" comes from RecipeViewController (model.addAttribute("recipes", ...))
-      -->
+      <!-- Show message if no recipes found -->
       <div th:if="${#lists.isEmpty(recipes)}">
-        <p>No recipes found!</p>
+        <p>No recipes found matching your criteria!</p>
       </div>
 
+      <!-- Display each recipe -->
       <div th:each="recipe : ${recipes}" class="recipe-card">
-        <h3 th:text="${recipe.name}">Recipe Name</h3>
-        <p><strong>Cuisine:</strong> <span th:text="${recipe.cuisine}">Cuisine</span></p>
+        <h3 th:text="${recipe.title}">Recipe Name</h3>
+        <p><strong>Cuisine:</strong> <span th:text="${recipe.cuisineType}">Cuisine</span></p>
         <p><strong>Time Required:</strong> <span th:text="${recipe.timeRequired}">0</span> minutes</p>
         <p><strong>Source:</strong> <span th:text="${recipe.source}">N/A</span></p>
+        
+        <!-- Show dietary info -->
+        <p>
+          <strong>Dietary:</strong> 
+          <span th:if="${recipe.vegan}" class="diet-tag">🌱 Vegan</span>
+          <span th:if="${!recipe.vegan && recipe.vegetarian}" class="diet-tag">🥬 Vegetarian</span>
+        </p>
 
-        <!-- Optional(?): list ingredients -->
+        <!-- Ingredients list -->
+        <h4>Ingredients:</h4>
         <ul>
           <li th:each="ingredient : ${recipe.ingredients}" 
-              th:text="${ingredient.name + ' - ' + ingredient.quantity + ' ' + ingredient.unit}">
+              th:text="${ingredient.quantity + ' ' + ingredient.unit + ' ' + ingredient.name}">
               Ingredient goes here
           </li>
         </ul>
+        
+        <!-- Instructions -->
+        <p><strong>Instructions:</strong> <span th:text="${recipe.instructions}">Instructions here</span></p>
       </div>
     </section>
 
-    <!-- FORM: Add a new recipe (optional: can later POST to /api/recipes) -->
+    <!-- FORM: Add a new recipe -->
     <section id="addRecipeSection">
       <h2>Add a New Recipe</h2>
-      <!-- For now, this form doesn't connect to Spring yet (will add to a @PostMapping controller method) -->
+      <!-- This form will POST to /api/recipes via JavaScript -->
       <form id="recipeForm">
         <div class="form-group">
           <label for="recipeTitle">Recipe Title</label>
           <input type="text" id="recipeTitle" name="title" required>
         </div>
 
-        <div class ="form-group" id="ingredientsContainer">
+        <div class="form-group" id="ingredientsContainer">
           <label>Ingredients:</label>
           <div class="ingredient-entry">
             <input type="text" name="ingredientName[]" placeholder="Ingredient Name" required>
             <input type="number" name="ingredientQuantity[]" placeholder="Quantity" step="0.01" required>
-            <select name="ingredientUnit" required>
+            <select name="ingredientUnit[]" required>
               <option value="grams">grams</option>
               <option value="cups">cups</option>
               <option value="tbsp">tablespoons</option>
               <option value="tsp">teaspoons</option>
               <option value="pieces">pieces</option>
+              <option value="oz">ounces</option>
+              <option value="lb">pounds</option>
             </select>
             <button type="button" class="remove-ingredient">Remove</button>
           </div>
@@ -110,14 +129,14 @@
         <div class="form-group">
           <label for="recipeCuisine">Cuisine Type</label>
           <select id="recipeCuisine" name="cuisineType" required>
-            <option value="">Select cuisine type ...</option>
+            <option value="">Select cuisine type...</option>
             <option value="Italian">Italian</option>
-            <option value="Mexian">Mexian</option>
-            <option value="Mexian">Mexian</option>
+            <option value="Mexican">Mexican</option>
             <option value="Asian">Asian</option>
             <option value="American">American</option>
             <option value="Indian">Indian</option>
             <option value="Mediterranean">Mediterranean</option>
+            <option value="Breakfast">Breakfast</option>
             <option value="Other">Other</option>
           </select>
         </div>
