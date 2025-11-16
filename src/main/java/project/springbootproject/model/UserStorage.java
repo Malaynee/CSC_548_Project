@@ -68,9 +68,4 @@ public class UserStorage {
         return null; // invalid login
     }
 
-    public static void main(String[] args) {
-        UserStorage service = new UserStorage();
-        service.createUser(new User("testuser", "abc123"));
-    }
-
 }
