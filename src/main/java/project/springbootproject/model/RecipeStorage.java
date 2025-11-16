@@ -11,17 +11,33 @@ import com.google.gson.Gson;
  * RecipeStorage class handles reading and writing recipes to a JSON file
  */
 public class RecipeStorage {
+    
+    private String username;
     //File where recipes are stored
-    private static final String FILE_PATH = "recipes.json";
+    private String filePath;
     // List to hold all recipes in memory
     private List<Recipe> recipes = new ArrayList<>();
+
+
+    //Constructor to 
+    public RecipeStorage(String username){
+        this.username = username;
+        this.filePath = "data/recipes/" + username + "/recipes.json";
+
+        // Make sure folder exists
+        try {
+            Files.createDirectories(Paths.get("data/recipes/" + username));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Loads recipes from JSON file into memory
      * If the file is missing or empty, starts with an empty list
      */
     public void loadRecipes() {
-        try (Reader reader = new FileReader(FILE_PATH)) {
+        try (Reader reader = new FileReader(filePath)) {
             recipes = new Gson().fromJson(reader, new TypeToken<List<Recipe>>(){}.getType());
             if (recipes == null) {
                 recipes = new ArrayList<>();
@@ -33,7 +49,7 @@ public class RecipeStorage {
 
     // Saves the current list of recipes to the JSON file
     public void saveRecipes() {
-        try (Writer writer = new FileWriter(FILE_PATH)) {
+        try (Writer writer = new FileWriter(filePath)) {
             new Gson().toJson(recipes, writer);
         } catch (IOException e) {
             e.printStackTrace();

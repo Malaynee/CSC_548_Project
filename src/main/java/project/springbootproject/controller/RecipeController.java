@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/recipes") // Base URL: /api/recipes
 public class RecipeController {
-    private RecipeStorage storage = new RecipeStorage();
+    private final RecipeStorage storage = RecipeStorage.getInstance();
 
     public RecipeController() {
         storage.loadRecipes();
