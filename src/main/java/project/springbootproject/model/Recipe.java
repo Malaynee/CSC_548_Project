@@ -14,13 +14,15 @@ public class Recipe {
     private String cuisineType;
     private boolean thumbsUpRating;
     private boolean thumbsDownRating;
+    private List<String> datesUsed;
 
     // No-arg constructor for Gson
     public Recipe() {
         this.ingredients = new ArrayList<>();
+        this.datesUsed = new ArrayList<>();
     }
     
-    public Recipe(String title, List<Ingredient> ingredients, String instructions, String source, int timeRequired, String timeUnit, String cuisineType, boolean thumbsUpRating, boolean thumbsDownRating) {
+    public Recipe(String title, List<Ingredient> ingredients, String instructions, String source, int timeRequired, String timeUnit, String cuisineType, boolean thumbsUpRating, boolean thumbsDownRating, List<String> datesUsed) {
         this.title = title;
         this.ingredients = ingredients;
         this.instructions = instructions;
@@ -30,6 +32,7 @@ public class Recipe {
         this.cuisineType = cuisineType;
         this.thumbsUpRating = thumbsUpRating;
         this.thumbsDownRating = thumbsDownRating;
+        this.datesUsed = datesUsed;
     }
 
     public void setTitle(){
@@ -102,6 +105,14 @@ public class Recipe {
 
     public void setThumbsDownRating(){
         this.thumbsDownRating = thumbsDownRating;
+    }
+
+    public List<String> getDatesUsed(){
+        return datesUsed;
+    }
+
+    public void setDatesUsed(String date){
+        datesUsed.add(day);
     }
 
     public boolean hasIngredient(Ingredient ingredient){
