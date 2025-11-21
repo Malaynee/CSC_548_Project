@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Software Project | Home</title>
+  <title>Recipe Manager | Home</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -15,6 +15,15 @@
         <li><a th:href="@{/}" class="active">Home</a></li>
         <li><a th:href="@{/ingredients}">Ingredients</a></li>
         <li><a th:href="@{/recipes}">Recipes</a></li>
+        <li>
+          <!-- Show logout if user is logged in, otherwise show login -->
+          <a th:if="${session.username}" th:href="@{/logout}" class="login-btn">
+            Logout (<span th:text="${session.username}">user</span>)
+          </a>
+          <a th:unless="${session.username}" th:href="@{/login}" class="login-btn">
+            Login
+          </a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -22,16 +31,22 @@
   <!-- MAIN CONTENT: Welcome message + Quick buttons -->
   <main class="home-content">
     <section class="welcome">
-      <h2>Welcome, <span th:text="${username}">User</span>!</h2>
+      <!-- Personalized welcome if logged in -->
+      <h2 th:if="${session.username}">
+        Welcome back, <span th:text="${session.username}">user</span>!
+      </h2>
+      <h2 th:unless="${session.username}">
+        Welcome to Your Recipe Manager!
+      </h2>
       <p>Manage your pantry, explore recipes, and create your own culinary masterpieces.</p>
     </section>
     
     <section class="quick-actions">
       <a th:href="@{/ingredients}">
-        <button id="addIngredientBtn">➕ Manage Ingredients</button>
+        <button id="manageIngredientsBtn">➕ Manage Ingredients</button>
       </a>
       <a th:href="@{/recipes}">
-        <button id="addRecipeBtn">🍲 View Recipes</button>
+        <button id="viewRecipesBtn">🍲 View Recipes</button>
       </a>
       
       <!-- Quick search (redirects to recipes page) -->
