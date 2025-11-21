@@ -73,7 +73,7 @@ import java.io.BufferedWriter;
 				System.out.println("What is the first ingredient in this recipe?");
 				userIngredient = userInput.nextLine(); 
 				ingredientObject.addIngredient();
-				System.out.println("Would you like to add another ingredient (enter y for yes and n for no)?")
+				System.out.println("Would you like to add another ingredient (enter y for yes and n for no)?");
 				String response = userInput.nextLine();
 
 				while(response == "y"){
@@ -81,7 +81,7 @@ import java.io.BufferedWriter;
 					System.out.println("What is the next ingredient in this recipe?");
 					userIngredient = userInput.nextLine(); 
 					ingredientObject.addIngredient();
-					System.out.println("Would you like to add another ingredient (enter y for yes and n for no)?")
+					System.out.println("Would you like to add another ingredient (enter y for yes and n for no)?");
 					String response = userInput.nextLine();
 
 				}
@@ -97,7 +97,7 @@ import java.io.BufferedWriter;
 				recipeObj.setSource(userSource);
 
 
-				System.out.println("How much time is required to make this recipe, excluding the units (i.e. if it is 4 hours, input just a 4)?")
+				System.out.println("How much time is required to make this recipe, excluding the units (i.e. if it is 4 hours, input just a 4)?");
 				double reportedTimeRequired = userInput.nextDouble();
 				
 
