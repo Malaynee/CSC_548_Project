@@ -15,6 +15,7 @@ public class Recipe {
     private boolean thumbsUpRating;
     private boolean thumbsDownRating;
     private List<String> datesUsed;
+    private boolean saveRecipe;
 
     // No-arg constructor for Gson
     public Recipe() {
@@ -33,6 +34,7 @@ public class Recipe {
         this.thumbsUpRating = thumbsUpRating;
         this.thumbsDownRating = thumbsDownRating;
         this.datesUsed = datesUsed;
+        this.saveRecipe = saveRecipe;
     }
 
     public void setTitle(){
@@ -61,6 +63,10 @@ public class Recipe {
 
     public void setCuisineType(){
         this.cuisineType = cuisineType;
+    }
+
+    public void setSave(){
+        this.saveRecipe = saveRecipe;
     }
 
     public String getTitle() {
@@ -97,6 +103,10 @@ public class Recipe {
 
     public boolean getThumbsDownRating(){
         return thumbsDownRating;
+    }
+
+    public boolean getSavedRecipe(){
+        return saveRecipe;
     }
 
     public void setThumbsUpRating(){
