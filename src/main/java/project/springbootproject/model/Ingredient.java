@@ -21,15 +21,17 @@ public class Ingredient {
     private String name;
     private double quantity;
     private String unit;
+    private boolean heart;
 
     // No-arg constructor for Json
     public Ingredient() {
     }
     
-    public Ingredient(String name, double quantity, String unit) {
+    public Ingredient(String name, double quantity, String unit, boolean heart) {
         this.name = name;
         this.quantity = quantity;
         this.unit = unit;
+        this.heart = heart;
     }
 
     // Getters + Setters
@@ -43,6 +45,10 @@ public class Ingredient {
       return unit; 
     }
 
+    public boolean getHeart(){
+      return heart;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -51,6 +57,10 @@ public class Ingredient {
     }
     public void setUnit(String unit) {
       this.unit = unit; 
+    }
+
+    public void setHeart(boolean heart){
+      this.heart = heart;
     }
 
     // Object Overrides
