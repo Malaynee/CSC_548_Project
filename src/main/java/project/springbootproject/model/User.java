@@ -14,6 +14,10 @@ public class User {
         this.passHash = hashPassword(password);
     }
 
+    // No-arg constructor for Gson
+    public User() {
+    }
+
     public String getUsername(){
         return username;
     }
@@ -26,6 +30,10 @@ public class User {
         return passHash;
     }
 
+    public void setPassHash(String passHash) {
+        this.passHash = passHash;
+    }
+
     // Verify login attempt
     public boolean checkPassword(String attempt) {
         return this.passHash.equals(hashPassword(attempt));
@@ -36,10 +44,8 @@ public class User {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = digest.digest(password.getBytes());
             return Base64.getEncoder().encodeToString(hashBytes);
-
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Could not hash password", e);
         }
     }
-
 }
