@@ -9,12 +9,25 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.*;
 
+/**
+ * Manages user data storage in individual directories
+ * Each user gets their own folder: users/username/user.json
+ */
 public class UserStorage {
     private final Path usersRoot = Paths.get("users");
     private final Gson gson;
 
-    public UserStorageService() {
+    public UserStorage() { 
         this.gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        // Create users directory if it doesn't exist
+        try {
+            if (!Files.exists(usersRoot)) {
+                Files.createDirectories(usersRoot);
+            }
+        } catch (IOException e) {
+            System.err.println("Could not create users directory: " + e.getMessage());
+        }
     }
 
     //check if user exists
@@ -39,9 +52,10 @@ public class UserStorage {
         try (FileWriter writer = new FileWriter(userFile.toFile())) {
             gson.toJson(user, writer);
         }
+        System.out.println("User created successfully: " + username);
     }
 
-    //lead an existing user
+    //load an existing user from storage
     public User loadUser(String username) throws IOException {
         Path userFile = usersRoot.resolve(username).resolve("user.json");
 
@@ -54,18 +68,17 @@ public class UserStorage {
         }
     }
 
-    //authenticate user
+    //authenticates a user login attempt
     public User authenticate(String username, String password) {
         try {
             User user = loadUser(username);
-
             if (user.checkPassword(password)) {
-                return user; // valid login
+                return user; // Valid login
             }
-
-        } catch (Exception ignored) {}
-
-        return null; // invalid login
+        } catch (Exception e) {
+            // User doesn't exist or file error
+            System.err.println("Authentication failed: " + e.getMessage());
+        }
+        return null; // Invalid login
     }
-
 }
