@@ -6,9 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import project.springbootproject.model.User;
+import project.springbootproject.model.UserStorage;
+import jakarta.servlet.http.HttpSession;
 
-
-
+/**
+ * Controller for user authentication (login and registration)
+ * Uses traditional MVC approach with form submissions
+ */
 @Controller
 public class UserController {
 
@@ -20,20 +25,25 @@ public class UserController {
         return "login";
     }
 
-    //handle login
+    // Handle login form submission
     @PostMapping("/login")
-    public String loginUser(@RequestBody String username, @RequestParam String password, Model model) {
+    public String loginUser(
+            @RequestParam String username, 
+            @RequestParam String password, 
+            HttpSession session,
+            Model model) {
         
         User user = userStorage.authenticate(username, password);
-
-        if(user != null) {
-            //log in successful
+        
+        if (user != null) {
+            // Login successful - store username in session
+            session.setAttribute("username", username);
             model.addAttribute("username", username);
-            return "index";
+            return "redirect:/"; // Redirect to home page
         } else {
-            //login failed
+            // Login failed
             model.addAttribute("error", "Invalid username or password.");
-            return "login";
+            return "login"; // Stay on login page with error
         }
     }
 
@@ -49,7 +59,7 @@ public class UserController {
         
         //check if user already exists
         if (userStorage.userExists(username)) {
-            model.Addattribute("error", "That username is already taken.");
+            model.addAttribute("error", "That username is already taken.");
             return "register";
         } 
 
@@ -62,7 +72,12 @@ public class UserController {
             return "register";
         }
     }
-    
-    
+
+    // handles logout
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // clear session
+        return "redirect:/"; // redirect to home
+    }
 
 }
