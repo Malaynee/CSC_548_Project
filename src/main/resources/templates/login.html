@@ -1,25 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Cooking Companion</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Login - Recipe Manager</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-  <!-- Simple Login Page -->
   <main class="login-container">
-    <h1>Login to Cooking Companion</h1>
-
-    <!-- LOGIN FORM -->
-    <form id="loginForm">
-      <input type="text" placeholder="Username" required>
-      <input type="password" placeholder="Password" required>
+    <h1>🍳 Login to Recipe Manager</h1>
+    
+    <!-- Show error message if login failed -->
+    <div th:if="${error}" class="form-message error" style="display: block;">
+      <span th:text="${error}"></span>
+    </div>
+    
+    <!-- LOGIN FORM - Traditional submission -->
+    <form method="post" th:action="@{/login}">
+      <div class="form-group">
+        <input type="text" name="username" placeholder="Username" required>
+      </div>
+      <div class="form-group">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
       <button type="submit">Login</button>
     </form>
-
-    <!-- FUTURE: Link to signup page(?) -->
-    <p>Don’t have an account? <a href="/register" class="btn-link" id="signupLink">Sign up</a></p>
+    
+    <p>Don't have an account? <a th:href="@{/register}">Sign up</a></p>
+    <p><a th:href="@{/}">Back to Home</a></p>
   </main>
 </body>
 </html>
