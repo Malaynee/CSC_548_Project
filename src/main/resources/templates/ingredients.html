@@ -15,6 +15,15 @@
         <li><a th:href="@{/}">Home</a></li>
         <li><a th:href="@{/ingredients}" class="active">Ingredients</a></li>
         <li><a th:href="@{/recipes}">Recipes</a></li>
+        <li>
+          <!-- Show logout if user is logged in, otherwise show login -->
+          <a th:if="${session.username}" th:href="@{/logout}" class="login-btn">
+            Logout (<span th:text="${session.username}">user</span>)
+          </a>
+          <a th:unless="${session.username}" th:href="@{/login}" class="login-btn">
+            Login
+          </a>
+        </li>
       </ul>
     </nav>
   </header>
