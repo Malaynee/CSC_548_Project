@@ -120,3 +120,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// New function to add dates to recipes
+function addDateToRecipe(button, recipeTitle) {
+    const dateInput = prompt(`Enter date for "${recipeTitle}" (YYYY-MM-DD):`);
+    if (dateInput) {
+        // Validate date format
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
+            // TODO: Send to backend API when you create an endpoint
+            console.log('Date to add:', dateInput);
+            alert('Date added! (Backend integration coming soon)');
+        } else {
+            alert('Please enter date in YYYY-MM-DD format');
+        }
+    }
+}

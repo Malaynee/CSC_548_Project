@@ -88,6 +88,12 @@
         
         <!-- Instructions -->
         <p><strong>Instructions:</strong> <span th:text="${recipe.instructions}">Instructions here</span></p>
+
+        <!-- Dates Used -->
+         <p><strong>Dates Used:</strong> 
+          <span th:text="${#lists.isEmpty(recipe.datesUsed) ? 'No date recorded' : #strings.listJoin(recipe.datesUsed, ', ')}">Dates Used</span>
+          <button type="button" class="btn-add-date" onclick="addDateToRecipe(this, [[${recipe.title}]])">+ Add Date</button>
+        </p>
       </div>
     </section>
 
