@@ -1,11 +1,17 @@
 // package line for spring boot
 package project.springbootproject.controller;
 
-import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.HttpSession;
 import project.springbootproject.model.Recipe;
 import project.springbootproject.model.RecipeStorage;
-
-import java.util.List;
 
 /**
  * REST controller for recipes
@@ -14,15 +20,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/recipes") // Base URL: /api/recipes
 public class RecipeController {
-    private final RecipeStorage storage = RecipeStorage.getInstance();
-
-    public RecipeController() {
-        storage.loadRecipes();
-    }
 
     // GET request: return all recipes as JSON
     @GetMapping
-    public List<Recipe> getAllRecipes() {
+    public List<Recipe> getAllRecipes(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            username = "guest"; // fallback for testing
+        }
+        RecipeStorage storage = new RecipeStorage(username);
+        storage.loadRecipes();
         return storage.getRecipes();
     }
 
@@ -31,7 +38,13 @@ public class RecipeController {
      * Frontend sends recipe data in JSON format
      */
     @PostMapping
-    public void addRecipe(@RequestBody Recipe recipe) {
+    public void addRecipe(@RequestBody Recipe recipe, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            username = "guest"; // fallback for testing
+        }
+        RecipeStorage storage = new RecipeStorage(username);
+        storage.loadRecipes();
         storage.addRecipe(recipe);
     }
 }

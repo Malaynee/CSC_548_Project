@@ -2,7 +2,7 @@ package project.springbootproject.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.springbootproject.model.User;
+import project.springbootproject.model.User;
 
 import java.io.FileReader;
 import java.io.FileWriter;

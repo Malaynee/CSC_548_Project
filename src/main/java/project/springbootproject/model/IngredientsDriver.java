@@ -5,14 +5,7 @@
  * New version contains alternative data structure organization.
  */
 
-package main;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
+package project.springbootproject.model;
 
 	/*BRAINSTORMING AREA
 	 * Want user to be able to input to EXISTING data, not have the data start over each time
@@ -33,77 +26,79 @@ import java.io.BufferedWriter;
 
 	    public static void main(String[] args){
 	    	
-			Ingredient ingredientObject = new Ingredient();
-			Recipe recipeObj = new Recipe();
-	    	Scanner userInput = new Scanner(System.in);
-			String userIngredient;
+			// Ingredient ingredientObject = new Ingredient();
+			// Recipe recipeObj = new Recipe();
+	    	// Scanner userInput = new Scanner(System.in);
+			// String userIngredient;
 	    	
-	    	System.out.println("What action would you like to take? Enter 1 for adding an ingredient, 2 for adding a recipe, or 3 for rating a recipe.");
-	    	int action = userInput.nextInt();
+	    	// System.out.println("What action would you like to take? Enter 1 for adding an ingredient, 2 for adding a recipe, or 3 for rating a recipe.");
+	    	// int action = userInput.nextInt();
 	    	
-	    	if (action == 1) {
+	    	// if (action == 1) {
 	    		
-	    		System.out.println("What is the name of the ingredient you would like to add?");
-	    		userIngredient = userInput.nextLine();
-				ingredientObject.setName(userIngredient);
-	    		System.out.println("What quantity do you have of this ingredient?");
-	    		String ingredientQuantity = userInput.nextLine().makeQuantityDouble();
-				ingredientObject.setQuantity(ingredientQuantity);
-				System.out.println("What is the unit this ingredient uses (ex: cups, oz, tbsp, tsp, etc.)");
-				String unit = userInput.nextLine(); 
-				ingredientObject.setUnit(unit);
-				ingredientObject.addIngredient();
+	    	// 	System.out.println("What is the name of the ingredient you would like to add?");
+	    	// 	userIngredient = userInput.nextLine();
+			// 	ingredientObject.setName(userIngredient);
+	    	// 	System.out.println("What quantity do you have of this ingredient?");
+	    	// 	String ingredientQuantity = userInput.nextLine().makeQuantityDouble();
+			// 	ingredientObject.setQuantity(ingredientQuantity);
+			// 	System.out.println("What is the unit this ingredient uses (ex: cups, oz, tbsp, tsp, etc.)");
+			// 	String unit = userInput.nextLine(); 
+			// 	ingredientObject.setUnit(unit);
+			// 	ingredientObject.addIngredient();
 
-				// ObjectMapper objectMapper = new ObjectMapper();
-				// //Need to test for if this works when we don't ask the user for alternative ingredient names - but for now, just implementing basic functionality.
-				// Ingredients userEntry = new Ingredients(userIngredient, ingredientQuantity, unit);
-				// userEntry.
-				// objectMapper.writeValue(new File ("src/main/resources/Ingredients.json"), userEntry);
+			// 	// ObjectMapper objectMapper = new ObjectMapper();
+			// 	// //Need to test for if this works when we don't ask the user for alternative ingredient names - but for now, just implementing basic functionality.
+			// 	// Ingredients userEntry = new Ingredients(userIngredient, ingredientQuantity, unit);
+			// 	// userEntry.
+			// 	// objectMapper.writeValue(new File ("src/main/resources/Ingredients.json"), userEntry);
 	    		
-	    		// if (!ingredientsMap.containsKey(userIngredient)) {
-	    		// 	ingredientsMap.addIngredientWithQuantity(userIngredient, ingredientQuantity);
-	    		// }	
-	    	}
+	    	// 	// if (!ingredientsMap.containsKey(userIngredient)) {
+	    	// 	// 	ingredientsMap.addIngredientWithQuantity(userIngredient, ingredientQuantity);
+	    	// 	// }	
+	    	// }
 
-			if (action == 2){
+			// if (action == 2){
 
-				System.out.println("What is the name of the recipe you would like to add?");
-				String userRecipe = userInput.nextLine();
-				recipeObj.setTitle(userRecipe);
-				System.out.println("What is the first ingredient in this recipe?");
-				userIngredient = userInput.nextLine(); 
-				ingredientObject.addIngredient();
-				System.out.println("Would you like to add another ingredient (enter y for yes and n for no)?");
-				String response = userInput.nextLine();
+			// 	System.out.println("What is the name of the recipe you would like to add?");
+			// 	String userRecipe = userInput.nextLine();
+			// 	recipeObj.setTitle(userRecipe);
+			// 	System.out.println("What is the first ingredient in this recipe?");
+			// 	userIngredient = userInput.nextLine(); 
+			// 	ingredientObject.addIngredient();
+			// 	System.out.println("Would you like to add another ingredient (enter y for yes and n for no)?");
+			// 	String response = userInput.nextLine();
 
-				while(response == "y"){
+			// 	while(response == "y"){
 
-					System.out.println("What is the next ingredient in this recipe?");
-					userIngredient = userInput.nextLine(); 
-					ingredientObject.addIngredient();
-					System.out.println("Would you like to add another ingredient (enter y for yes and n for no)?");
-					String response = userInput.nextLine();
+			// 		System.out.println("What is the next ingredient in this recipe?");
+			// 		userIngredient = userInput.nextLine(); 
+			// 		ingredientObject.addIngredient();
+			// 		System.out.println("Would you like to add another ingredient (enter y for yes and n for no)?");
+			// 		String response = userInput.nextLine();
 
-				}
+			// 	}
 
-				recipeObj.setIngredients(ingredientObject);
+			// 	recipeObj.setIngredients(ingredientObject);
 				
-				System.out.println("Enter the instructions for the recipe.");
-				String userInstructions = userInput.nextLine();
-				recipeObj.setInstructions(userInstructions);
+			// 	System.out.println("Enter the instructions for the recipe.");
+			// 	String userInstructions = userInput.nextLine();
+			// 	recipeObj.setInstructions(userInstructions);
 
-				System.out.println("Copy the URL where you found the recipe and paste it here.");
-				String userSource = userInput.nextLine();
-				recipeObj.setSource(userSource);
+			// 	System.out.println("Copy the URL where you found the recipe and paste it here.");
+			// 	String userSource = userInput.nextLine();
+			// 	recipeObj.setSource(userSource);
 
 
-				System.out.println("How much time is required to make this recipe, excluding the units (i.e. if it is 4 hours, input just a 4)?");
-				double reportedTimeRequired = userInput.nextDouble();
+			// 	System.out.println("How much time is required to make this recipe, excluding the units (i.e. if it is 4 hours, input just a 4)?");
+			// 	double reportedTimeRequired = userInput.nextDouble();
 				
 
 
 
-			}
+			//}
+			// Legacy code - not used in Spring Boot version
+	    	// This was used for command-line ingredient/recipe input
 	    }
 
 
@@ -141,7 +136,7 @@ import java.io.BufferedWriter;
 	    // }
 
 
-		public double makeQuantityDouble(String quantity){
+		public static double makeQuantityDouble(String quantity){
 
 			String numerator;
 	    	String denominator;
@@ -168,5 +163,6 @@ import java.io.BufferedWriter;
 	    		
 	    		calculatableQuantity = Double.parseDouble(quantity);
 	    	}
+	    	return calculatableQuantity;
 		}
 	    }

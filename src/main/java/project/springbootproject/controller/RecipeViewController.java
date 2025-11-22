@@ -15,7 +15,7 @@ import project.springbootproject.model.RecipeStorage;
 @Controller
 public class RecipeViewController {
     // Manages and provides recipe data
-    private final RecipeStorage storage = new RecipeStorage();
+    private final RecipeStorage storage = new RecipeStorage("guest");
     /**
      * Handles GET requests to "/recipes"
      * 

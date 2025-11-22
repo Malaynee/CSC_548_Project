@@ -122,7 +122,7 @@ public class Recipe {
     }
 
     public void setDatesUsed(String date){
-        datesUsed.add(day);
+        datesUsed.add(date);
     }
 
     public boolean hasIngredient(Ingredient ingredient){
