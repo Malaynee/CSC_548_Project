@@ -333,3 +333,40 @@ border: 1px solid #f1c7c7;
 .btn-link:hover { 
   filter: brightness(0.95); 
 }
+
+/* Rating styles */
+.rating-display {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-left: 0.5rem;
+}
+
+.rating-buttons {
+  display: inline-flex;
+  gap: 10px;
+  margin-left: 0.5rem;
+}
+
+.btn-thumbs-up,
+.btn-thumbs-down {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+
+.btn-thumbs-down {
+  background: #f44336;
+}
+
+.btn-thumbs-up:hover {
+  background: #45a049;
+}
+
+.btn-thumbs-down:hover {
+  background: #da190b;
+}

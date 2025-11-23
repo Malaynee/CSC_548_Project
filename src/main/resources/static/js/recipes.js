@@ -135,3 +135,12 @@ function addDateToRecipe(button, recipeTitle) {
         }
     }
 }
+
+// Rate recipe (thumbs up or down)
+function rateRecipe(button, recipeTitle, isThumbsUp) {
+    const rating = isThumbsUp ? '👍 Thumbs Up' : '👎 Thumbs Down';
+    console.log(`Rating "${recipeTitle}": ${rating}`);
+    
+    // TODO: Send to backend API to save the rating
+    alert(`Recipe rated: ${rating}`);
+}

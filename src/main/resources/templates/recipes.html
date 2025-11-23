@@ -77,6 +77,19 @@
           <span th:if="${!recipe.vegan && recipe.vegetarian}" class="diet-tag">🥬 Vegetarian</span>
         </p>
 
+        <!-- Rating Section -->
+        <p>
+          <strong>Rating:</strong>
+          <!-- If recipe has been rated, show the rating -->
+          <span th:if="${recipe.thumbsUpRating}" class="rating-display">👍 Thumbs Up</span>
+          <span th:if="${recipe.thumbsDownRating}" class="rating-display">👎 Thumbs Down</span>
+          <!-- If recipe hasn't been rated, show rating buttons -->
+          <span th:if="${!recipe.thumbsUpRating && !recipe.thumbsDownRating}" class="rating-buttons">
+            <button type="button" class="btn-thumbs-up" th:onclick="'rateRecipe(this, ' + '&quot;' + ${recipe.title} + '&quot;' + ', true)'">👍 Thumbs Up</button>
+            <button type="button" class="btn-thumbs-down" th:onclick="'rateRecipe(this, ' + '&quot;' + ${recipe.title} + '&quot;' + ', false)'">👎 Thumbs Down</button>
+          </span>
+        </p>
+
         <!-- Ingredients list -->
         <h4>Ingredients:</h4>
         <ul>
