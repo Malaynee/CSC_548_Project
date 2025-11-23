@@ -370,3 +370,22 @@ border: 1px solid #f1c7c7;
 .btn-thumbs-down:hover {
   background: #da190b;
 }
+
+/* Heart button for favorites */
+.btn-heart {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: color 0.2s;
+  color: #ccc;
+}
+
+.btn-heart:hover {
+  color: #ff69b4;
+}
+
+.btn-heart.heart-filled {
+  color: #ff1493;
+}

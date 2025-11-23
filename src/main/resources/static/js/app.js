@@ -144,3 +144,22 @@ function rateRecipe(button, recipeTitle, isThumbsUp) {
     // TODO: Send to backend API to save the rating
     alert(`Recipe rated: ${rating}`);
 }
+
+    // Heart/Favorite function for ingredients
+    function toggleHeart(button) {
+      const ingredientName = button.getAttribute('data-ingredient');
+      const isFilled = button.textContent === '♥';
+      
+      if (isFilled) {
+        button.textContent = '♡';
+        button.classList.remove('heart-filled');
+        console.log(`Removed ${ingredientName} from favorites`);
+      } else {
+        button.textContent = '♥';
+        button.classList.add('heart-filled');
+        console.log(`Added ${ingredientName} to favorites`);
+      }
+      
+      // TODO: Send to backend API to save favorite status
+      // Example: fetch('/api/ingredients/' + ingredientName + '/favorite', { method: 'POST' })
+    }

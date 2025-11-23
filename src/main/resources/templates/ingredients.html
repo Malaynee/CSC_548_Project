@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Pantry</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
+  <script th:src="@{/js/app.js}" defer></script>
 </head>
 <body>
   <!-- HEADER + NAV BAR -->
@@ -38,6 +39,7 @@
           <th>Name</th>
           <th>Quantity</th>
           <th>Unit</th>
+          <th>Favorite</th>
         </tr>
       </thead>
       <tbody>
@@ -50,6 +52,7 @@
           <td th:text="${ingredient.name}">Name</td>
           <td th:text="${ingredient.quantity}">0</td>
           <td th:text="${ingredient.unit}">unit</td>
+          <td> <button type="button" class="btn-heart" th:attr="data-ingredient=${ingredient.name}" onclick="toggleHeart(this)">♡</button></td>
         </tr>
       </tbody>
     </table>
