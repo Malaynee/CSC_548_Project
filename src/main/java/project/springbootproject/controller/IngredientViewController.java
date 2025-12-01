@@ -3,6 +3,8 @@ package project.springbootproject.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import jakarta.servlet.http.HttpSession;
 import project.springbootproject.model.IngredientStorage;
 
 /**
@@ -15,14 +17,20 @@ import project.springbootproject.model.IngredientStorage;
 
 @Controller // Marks this class as a Thymeleaf (MVC) controller
 public class IngredientViewController {
-    // Storage object manages and provides ingredient data
-    private final IngredientStorage storage = new IngredientStorage();
     /**
      * Handles GET requests for "/ingredients" -> loads all ingredients from storage and adds them to the
      * model, which Thymeleaf uses to display data
      */
     @GetMapping("/ingredients")
-    public String viewIngredients(Model model) {
+    public String viewIngredients(Model model, HttpSession session) {
+        // Get username from session (fallback to "guest" for testing)
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            username = "guest";
+        }
+        
+        // Create storage for this user
+        IngredientStorage storage = new IngredientStorage(username);
         // Load/refresh ingredient data before displaying
         storage.loadIngredients();
 

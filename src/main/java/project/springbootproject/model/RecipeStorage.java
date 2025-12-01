@@ -1,12 +1,22 @@
 // package line for spring boot
 package project.springbootproject.model;
 
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.stream.Collectors; // for filtering lists easier
-import com.google.gson.reflect.TypeToken;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException; // for filtering lists easier
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * RecipeStorage class handles reading and writing recipes to a JSON file
@@ -23,11 +33,21 @@ public class RecipeStorage {
     //Constructor to 
     public RecipeStorage(String username){
         this.username = username;
-        this.filePath = "data/recipes/" + username + "/recipes.json";
+        // Use user.dir to get the actual working directory where the app runs
+        String baseDir = System.getProperty("user.dir");
+        this.filePath = baseDir + File.separator + "data" + File.separator + "recipes" + File.separator + username + File.separator + "recipes.json";
 
         // Make sure folder exists
         try {
-            Files.createDirectories(Paths.get("data/recipes/" + username));
+            Files.createDirectories(Paths.get(baseDir + File.separator + "data" + File.separator + "recipes" + File.separator + username));
+            
+            // If recipes.json doesn't exist, initialize it with an empty list
+            File recipeFile = new File(filePath);
+            if (!recipeFile.exists()) {
+                // Create empty recipes list
+                this.recipes = new ArrayList<>();
+                saveRecipes();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

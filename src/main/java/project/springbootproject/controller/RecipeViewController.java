@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpSession;
 import project.springbootproject.model.RecipeStorage;
 
 /**
@@ -14,8 +16,6 @@ import project.springbootproject.model.RecipeStorage;
  */
 @Controller
 public class RecipeViewController {
-    // Manages and provides recipe data
-    private final RecipeStorage storage = new RecipeStorage("guest");
     /**
      * Handles GET requests to "/recipes"
      * 
@@ -29,8 +29,17 @@ public class RecipeViewController {
     public String viewRecipes(
             @RequestParam(required = false) String cuisine,
             @RequestParam(required = false) String diet,
-            Model model) {
+            Model model,
+            HttpSession session) {
         
+        // Get username from session (fallback to "guest" for testing)
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            username = "guest";
+        }
+        
+        // Create storage for this user
+        RecipeStorage storage = new RecipeStorage(username);
         // Load or refresh the recipe data
         storage.loadRecipes();
         // Apply filters (both, one, or none)

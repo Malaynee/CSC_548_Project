@@ -45,7 +45,7 @@
       <tbody>
         <!-- If no ingredients exist -->
         <tr th:if="${#lists.isEmpty(ingredients)}">
-          <td colspan="3">No ingredients in pantry!</td>
+          <td colspan="4">No ingredients in pantry!</td>
         </tr>
         <!-- Loop through each ingredient -->
         <tr th:each="ingredient : ${ingredients}">

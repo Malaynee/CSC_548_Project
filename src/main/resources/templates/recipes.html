@@ -85,8 +85,8 @@
           <span th:if="${recipe.thumbsDownRating}" class="rating-display">👎 Thumbs Down</span>
           <!-- If recipe hasn't been rated, show rating buttons -->
           <span th:if="${!recipe.thumbsUpRating && !recipe.thumbsDownRating}" class="rating-buttons">
-            <button type="button" class="btn-thumbs-up" th:onclick="'rateRecipe(this, ' + '&quot;' + ${recipe.title} + '&quot;' + ', true)'">👍 Thumbs Up</button>
-            <button type="button" class="btn-thumbs-down" th:onclick="'rateRecipe(this, ' + '&quot;' + ${recipe.title} + '&quot;' + ', false)'">👎 Thumbs Down</button>
+            <button type="button" class="btn-thumbs-up" th:attr="data-recipe-title=${recipe.title}" onclick="rateRecipe(this, true)">👍 Thumbs Up</button>
+            <button type="button" class="btn-thumbs-down" th:attr="data-recipe-title=${recipe.title}" onclick="rateRecipe(this, false)">👎 Thumbs Down</button>
           </span>
         </p>
 
@@ -105,7 +105,7 @@
         <!-- Dates Used -->
          <p><strong>Dates Used:</strong> 
           <span th:text="${#lists.isEmpty(recipe.datesUsed) ? 'No date recorded' : #strings.listJoin(recipe.datesUsed, ', ')}">Dates Used</span>
-          <button type="button" class="btn-add-date" onclick="addDateToRecipe(this, [[${recipe.title}]])">+ Add Date</button>
+          <button type="button" class="btn-add-date" th:attr="data-recipe-title=${recipe.title}" onclick="addDateToRecipe(this)">+ Add Date</button>
         </p>
       </div>
     </section>

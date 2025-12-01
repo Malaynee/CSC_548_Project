@@ -37,35 +37,35 @@ public class Recipe {
         this.saveRecipe = saveRecipe;
     }
 
-    public void setTitle(){
+    public void setTitle(String title){
         this.title = title;
     }
 
-    public void setIngredients(){
+    public void setIngredients(List<Ingredient> ingredients){
         this.ingredients = ingredients;
     }
 
-    public void setInstructions(){
+    public void setInstructions(String instructions){
         this.instructions = instructions;
     }
 
-    public void setSource(){
+    public void setSource(String source){
         this.source = source;
     }
 
-    public void setTimeRequired(){
+    public void setTimeRequired(int timeRequired){
         this.timeRequired = timeRequired;
     }
 
-    public void setTimeUnit(){
+    public void setTimeUnit(String timeUnit){
         this.timeUnit = timeUnit;
     }
 
-    public void setCuisineType(){
+    public void setCuisineType(String cuisineType){
         this.cuisineType = cuisineType;
     }
 
-    public void setSave(){
+    public void setSave(boolean saveRecipe){
         this.saveRecipe = saveRecipe;
     }
 
@@ -109,11 +109,11 @@ public class Recipe {
         return saveRecipe;
     }
 
-    public void setThumbsUpRating(){
+    public void setThumbsUpRating(boolean thumbsUpRating){
         this.thumbsUpRating = thumbsUpRating;
     }
 
-    public void setThumbsDownRating(){
+    public void setThumbsDownRating(boolean thumbsDownRating){
         this.thumbsDownRating = thumbsDownRating;
     }
 
