@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import project.springbootproject.model.RecipeStorage;
+import project.springbootproject.model.IngredientStorage;
+import project.springbootproject.model.Recipe;
+import project.springbootproject.model.Ingredient;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controller for rendering the Recipes page using Thymeleaf
@@ -16,6 +22,9 @@ import project.springbootproject.model.RecipeStorage;
  */
 @Controller
 public class RecipeViewController {
+    private final RecipeStorage recipeStorage = new RecipeStorage();
+    private final IngredientStorage ingredientStorage = new IngredientStorage();
+
     /**
      * Handles GET requests to "/recipes"
      * 
@@ -23,32 +32,72 @@ public class RecipeViewController {
      *  - /recipes -> shows all recipes
      *  - /recipes?cuisine=Italian -> shows only Italian recipes
      *  - /recipes?diet=vegetarian -> shows only vegetarian recipes
-     *  - /recipes?cuisine=Italian&diet=vegan -> shows Italian vegan recipes
+     *  - /recipes?canMake=true -> shows only recipes user can make with current ingredients
+     *  - /recipes?cuisine=Italian&diet=vegan&canMake=true -> all filters combined
      */
     @GetMapping("/recipes")
     public String viewRecipes(
             @RequestParam(required = false) String cuisine,
             @RequestParam(required = false) String diet,
-            Model model,
-            HttpSession session) {
+            @RequestParam(required = false) String canMake,
+            HttpSession session,
+            Model model) {
         
-        // Get username from session (fallback to "guest" for testing)
-        String username = (String) session.getAttribute("username");
-        if (username == null) {
-            username = "guest";
+        // Load recipe + ingredient data
+        recipeStorage.loadRecipes();
+        ingredientStorage.loadIngredients();
+        
+        List<Recipe> filteredRecipes;
+        
+        // Check if "Can Make" filter is active
+        if ("true".equals(canMake)) {
+            // Get user's available ingredients
+            List<Ingredient> availableIngredients = ingredientStorage.getIngredients();
+            
+            // Get recipes user can make
+            filteredRecipes = recipeStorage.getRecipesCanMake(availableIngredients);
+            
+            // Further filter by cuisine and diet if specified
+            if (cuisine != null && !cuisine.isEmpty() && !cuisine.equalsIgnoreCase("all")) {
+                filteredRecipes = filteredRecipes.stream()
+                    .filter(recipe -> recipe.getCuisineType() != null && 
+                                     recipe.getCuisineType().equalsIgnoreCase(cuisine))
+                    .collect(java.util.stream.Collectors.toList());
+            }     
+            if (diet != null && !diet.isEmpty() && !diet.equalsIgnoreCase("none")) {
+                filteredRecipes = filteredRecipes.stream()
+                    .filter(recipe -> {
+                        if (diet.equalsIgnoreCase("vegan")) {
+                            return recipe.isVegan();
+                        } else if (diet.equalsIgnoreCase("vegetarian")) {
+                            return recipe.isVegetarian();
+                        }
+                        return true;
+                    })
+                    .collect(java.util.stream.Collectors.toList());
+            }
+            
+            model.addAttribute("filterActive", true);
+            model.addAttribute("canMakeCount", filteredRecipes.size());
+        } else {
+            // Normal filtering (no ingredient matching)
+            filteredRecipes = recipeStorage.getFilteredRecipes(cuisine, diet);
+            model.addAttribute("filterActive", false);
         }
         
-        // Create storage for this user
-        RecipeStorage storage = new RecipeStorage(username);
-        // Load or refresh the recipe data
-        storage.loadRecipes();
-        // Apply filters (both, one, or none)
-        model.addAttribute("recipes", storage.getFilteredRecipes(cuisine, diet));
-        // Pass available cuisine types for the dropdown
-        model.addAttribute("cuisineTypes", storage.getAllCuisineTypes());
-        // Pass current filter values back to the view to maintain selection
+        // Get match percentages for all recipes (for display)
+        List<Ingredient> availableIngredients = ingredientStorage.getIngredients();
+        Map<Recipe, Integer> matchPercentages = recipeStorage.getRecipesWithMatchPercentage(availableIngredients);
+        
+        // Add data to model
+        model.addAttribute("recipes", filteredRecipes);
+        model.addAttribute("matchPercentages", matchPercentages);
+        model.addAttribute("cuisineTypes", recipeStorage.getAllCuisineTypes());
         model.addAttribute("selectedCuisine", cuisine != null ? cuisine : "all");
         model.addAttribute("selectedDiet", diet != null ? diet : "none");
+        model.addAttribute("canMakeFilter", canMake);
+        model.addAttribute("totalIngredients", availableIngredients.size());
+
         return "recipes";
     }
 }
