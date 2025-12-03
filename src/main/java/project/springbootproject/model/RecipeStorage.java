@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -175,5 +177,46 @@ public class RecipeStorage {
                 .distinct()
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+// Get recipes that can be made with available ingredients
+public List<Recipe> getRecipesCanMake(List<Ingredient> availableIngredients) {
+    if (recipes == null || recipes.isEmpty() || availableIngredients == null) {
+        return Collections.emptyList();
+    }
+    
+    return recipes.stream()
+        .filter(recipe -> recipe.canMakeWithIngredients(availableIngredients))
+        .collect(Collectors.toList());
+}
+
+// Gets recipes with partial matches (sorted by match percentage)
+public List<Recipe> getRecipesByMatch(List<Ingredient> availableIngredients, int minMatchPercentage) {
+    if (recipes == null || recipes.isEmpty() || availableIngredients == null) {
+        return Collections.emptyList();
+    }
+    
+    return recipes.stream()
+        .filter(recipe -> recipe.getMatchPercentage(availableIngredients) >= minMatchPercentage)
+        .sorted((r1, r2) -> Integer.compare(
+            r2.getMatchPercentage(availableIngredients),
+            r1.getMatchPercentage(availableIngredients)
+        ))
+        .collect(Collectors.toList());
+}
+
+    // Get all recipes with match percentages (for display)
+    public Map<Recipe, Integer> getRecipesWithMatchPercentage(List<Ingredient> availableIngredients) {
+        if (recipes == null || recipes.isEmpty() || availableIngredients == null) {
+            return Collections.emptyMap();
+        }
+        Map<Recipe, Integer> recipeMatches = new HashMap<>();
+        
+        for (Recipe recipe : recipes) {
+            int matchPercentage = recipe.getMatchPercentage(availableIngredients);
+            recipeMatches.put(recipe, matchPercentage);
+        }
+        
+        return recipeMatches;
     }
 }
