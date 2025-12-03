@@ -389,3 +389,160 @@ border: 1px solid #f1c7c7;
 .btn-heart.heart-filled {
   color: #ff1493;
 }
+
+/* Can Make Section Styling */
+.can-make-section {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.btn-can-make {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+}
+
+.btn-can-make:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+.ingredient-count {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+/* Filter Active Banner */
+.filter-active-banner {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-clear-filter {
+  background: white;
+  color: #11998e;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.btn-clear-filter:hover {
+  background: #f0f0f0;
+}
+
+/* Match Badge Styling */
+.recipe-card {
+  position: relative;
+}
+
+.match-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #e0e0e0;
+  padding: 0.5rem;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 60px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.match-badge span {
+  display: block;
+  font-size: 1.1rem;
+}
+
+.match-badge small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: normal;
+  opacity: 0.8;
+}
+
+/* Match Badge Colors */
+.match-perfect {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.match-high {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+  color: white;
+}
+
+.match-medium {
+  background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+  color: white;
+}
+
+.match-low {
+  background: linear-gradient(135deg, #bbb 0%, #ddd 100%);
+  color: #333;
+}
+
+/* Ingredient Availability */
+.ingredient-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.ingredient-list li {
+  padding: 0.25rem 0.5rem;
+  margin: 0.25rem 0;
+  border-radius: 4px;
+}
+
+.ingredient-available {
+  background: #e8f5e9;
+  border-left: 3px solid #4caf50;
+}
+
+/* Missing Ingredients Tag */
+.missing-ingredients {
+  background: #fff3e0;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+  border-left: 3px solid #ff9800;
+}
+
+.missing-tag {
+  display: inline-block;
+  background: #ffecb3;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  margin: 0.2rem;
+  color: #e65100;
+}
