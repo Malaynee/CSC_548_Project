@@ -1,6 +1,5 @@
 package project.springbootproject.controller;
 
-import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +22,8 @@ import java.util.Map;
  */
 @Controller
 public class RecipeViewController {
+    private final RecipeStorage recipeStorage = new RecipeStorage();
+    private final IngredientStorage ingredientStorage = new IngredientStorage();
 
     /**
      * Handles GET requests to "/recipes"
@@ -41,13 +42,6 @@ public class RecipeViewController {
             @RequestParam(required = false) String canMake,
             HttpSession session,
             Model model) {
-        
-            String username = (String) session.getAttribute("username");
-            if (username == null) {
-                username = "guest";
-            }
-        RecipeStorage recipeStorage = new RecipeStorage(username);
-        IngredientStorage ingredientStorage = new IngredientStorage(username);
         
         // Load recipe + ingredient data
         recipeStorage.loadRecipes();

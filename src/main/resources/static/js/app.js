@@ -200,30 +200,4 @@ function rateRecipe(button, isThumbsUp) {
       
       // TODO: Send to backend API to save favorite status
       // Example: fetch('/api/ingredients/' + ingredientName + '/favorite', { method: 'POST' })
-
-      fetch(`/api/ingredients/${encodeURIComponent(ingredientName)}/favorite`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ isFilled })
-    })
-
-    .catch(error => {
-        alert('Error saving rating: ' + error.message);
-        console.error(error);
-    })
-}
-
-    /*
-    .then(response => {
-        if (response.ok) {
-            alert(`Ingredient saved: ${rating}`);
-            location.reload(); // Reload to see updated rating
-        } else {
-            alert('Failed to save rating');
-        }
-    })
-    ;
-
-    */
+    }
