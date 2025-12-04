@@ -67,10 +67,10 @@ public class RecipeViewController {
         // Check if "Can Make" filter is active
         if ("true".equals(canMake)) {
             // Get user's available ingredients
-            List<Ingredient> availableIngredients = ingredientStorage.getIngredients();
+            List<Ingredient> usableIngredients = ingredientStorage.getIngredients();
             
             // Get recipes user can make
-            filteredRecipes = recipeStorage.getRecipesCanMake(availableIngredients);
+            filteredRecipes = recipeStorage.getRecipesCanMake(usableIngredients);
             
             // Further filter by cuisine and diet if specified
             if (cuisine != null && !cuisine.isEmpty() && !cuisine.equalsIgnoreCase("all")) {
