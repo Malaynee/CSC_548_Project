@@ -174,7 +174,7 @@ public class Recipe {
     }
     
     // Checks if this recipe can be made w/ available ingredients
-    /** public boolean canMakeWithIngredients(List<Ingredient> availableIngredients) {
+    public boolean canMakeWithIngredients(List<Ingredient> availableIngredients) {
         // Create a set of available ingredient names (case-insensitive)
         Set<String> availableNames = availableIngredients.stream()
             .map(ing -> ing.getName().toLowerCase().trim())
@@ -188,34 +188,10 @@ public class Recipe {
             }
         }
         return true; // Has all ingredients!
-    } */
-    public boolean canMakeWithIngredients(List<Ingredient> availableIngredients) {
-        if (availableIngredients == null || availableIngredients.isEmpty()) {
-            return false;
-        }
-        
-        if (this.ingredients == null || this.ingredients.isEmpty()) {
-            return false;
-        }
-        
-        // Create a set of available ingredient names (case-insensitive)
-        java.util.Set<String> availableNames = availableIngredients.stream()
-            .map(ing -> ing.getName().toLowerCase().trim())
-            .collect(java.util.stream.Collectors.toSet());
-        
-        // Check if all recipe ingredients are available
-        for (Ingredient requiredIngredient : this.ingredients) {
-            String requiredName = requiredIngredient.getName().toLowerCase().trim();
-            
-            if (!availableNames.contains(requiredName)) {
-                return false; // Missing this ingredient
-            }
-        }  
-        return true; // Has all ingredients!
     }
     
     // Gets list of missing ingredients
-    /** public List<String> getMissingIngredients(List<Ingredient> availableIngredients) {
+    public List<String> getMissingIngredients(List<Ingredient> availableIngredients) {
         Set<String> availableNames = availableIngredients.stream()
             .map(ing -> ing.getName().toLowerCase().trim())
             .collect(Collectors.toSet());
@@ -230,35 +206,6 @@ public class Recipe {
             }
         }
         return missing;
-    } */
-    public List<String> getMissingIngredients(List<Ingredient> availableIngredients) {
-        List<String> missing = new java.util.ArrayList<>();
-        
-        if (this.ingredients == null || this.ingredients.isEmpty()) {
-            return missing;
-        }
-        
-        if (availableIngredients == null || availableIngredients.isEmpty()) {
-            // All ingredients are missing
-            for (Ingredient ing : this.ingredients) {
-                missing.add(ing.getName());
-            }
-            return missing;
-        }
-        
-        java.util.Set<String> availableNames = availableIngredients.stream()
-            .map(ing -> ing.getName().toLowerCase().trim())
-            .collect(java.util.stream.Collectors.toSet());
-        
-        for (Ingredient requiredIngredient : this.ingredients) {
-            String requiredName = requiredIngredient.getName().toLowerCase().trim();
-            
-            if (!availableNames.contains(requiredName)) {
-                missing.add(requiredIngredient.getName());
-            }
-        }
-        
-        return missing;
     }
     
     // Calculates match percentage
@@ -266,10 +213,7 @@ public class Recipe {
         if (this.ingredients == null || this.ingredients.isEmpty()) {
             return 0;
         }
-        if (availableIngredients == null || availableIngredients.isEmpty()) {
-            return 0;
-        }
-        java.util.Set<String> availableNames = availableIngredients.stream()
+        Set<String> availableNames = availableIngredients.stream()
             .map(ing -> ing.getName().toLowerCase().trim())
             .collect(Collectors.toSet());
         

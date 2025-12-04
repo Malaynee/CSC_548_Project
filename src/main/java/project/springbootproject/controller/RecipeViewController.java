@@ -14,7 +14,6 @@ import project.springbootproject.model.Ingredient;
 
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * Controller for rendering the Recipes page using Thymeleaf
@@ -53,14 +52,6 @@ public class RecipeViewController {
         // Load recipe + ingredient data
         recipeStorage.loadRecipes();
         ingredientStorage.loadIngredients();
-
-        // Get available ingredients
-        List<Ingredient> availableIngredients = ingredientStorage.getIngredients();
-        
-        // If null or empty, initialize as empty list
-        if (availableIngredients == null) {
-            availableIngredients = new java.util.ArrayList<>();
-        }
         
         List<Recipe> filteredRecipes;
         
@@ -101,18 +92,8 @@ public class RecipeViewController {
         }
         
         // Get match percentages for all recipes (for display)
-        //List<Ingredient> availableIngredients = ingredientStorage.getIngredients();
-        //Map<Recipe, Integer> matchPercentages = recipeStorage.getRecipesWithMatchPercentage(availableIngredients);
-
-        // Calculate match percentages and missing ingredients for ALL filtered recipes
-        Map<String, Integer> matchPercentages = new HashMap<>();
-        Map<String, List<String>> missingIngredients = new HashMap<>();
-
-        for (Recipe recipe : filteredRecipes) {
-            String recipeTitle = recipe.getTitle();
-            matchPercentages.put(recipeTitle, recipe.getMatchPercentage(availableIngredients));
-            missingIngredients.put(recipeTitle, recipe.getMissingIngredients(availableIngredients));
-        }
+        List<Ingredient> availableIngredients = ingredientStorage.getIngredients();
+        Map<Recipe, Integer> matchPercentages = recipeStorage.getRecipesWithMatchPercentage(availableIngredients);
         
         // Add data to model
         model.addAttribute("recipes", filteredRecipes);
