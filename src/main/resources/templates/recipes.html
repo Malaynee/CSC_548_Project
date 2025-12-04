@@ -8,6 +8,7 @@
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <script th:src="@{/js/app.js}" defer></script>
 </head>
+
 <body>
   <!-- HEADER + NAV -->
   <header>
@@ -18,7 +19,7 @@
         <li><a th:href="@{/ingredients}">Ingredients</a></li>
         <li><a th:href="@{/recipes}" class="active">Recipes</a></li>
         <li>
-          <!-- Show logout if user is logged in, otherwise show login -->
+          <!-- Login/Logout -->
           <a th:if="${session.username}" th:href="@{/logout}" class="login-btn">
             Logout (<span th:text="${session.username}">user</span>)
           </a>
@@ -31,13 +32,14 @@
   </header>
 
   <main class="recipe-page">
+
+    <!-- SEARCH + FILTERS -->
     <div class="search-bar">
-      <!-- Basic search input -->
+
       <input type="text" placeholder="Search recipes..." id="recipeSearch">
-      
-      <!-- FILTER FORM: Cuisine Type + Dietary Restrictions + Can Make -->
+
+      <!-- Filters -->
       <form method="get" th:action="@{/recipes}">
-        <!-- Cuisine Filter Dropdown -->
         <select name="cuisine" id="cuisineFilter" onchange="this.form.submit()">
           <option value="all" th:selected="${selectedCuisine == 'all'}">All Cuisines</option>
           <option th:each="type : ${cuisineTypes}" 
@@ -46,19 +48,17 @@
                   th:selected="${type == selectedCuisine}">
           </option>
         </select>
-        
-        <!-- Dietary Restriction Filter -->
+
         <select name="diet" id="dietFilter" onchange="this.form.submit()">
           <option value="none" th:selected="${selectedDiet == 'none'}">No Dietary Filter</option>
           <option value="vegetarian" th:selected="${selectedDiet == 'vegetarian'}">Vegetarian</option>
           <option value="vegan" th:selected="${selectedDiet == 'vegan'}">Vegan</option>
         </select>
-        
-        <!-- Hidden field to maintain canMake filter when other filters change -->
+
         <input type="hidden" name="canMake" th:value="${canMakeFilter}">
       </form>
-      
-      <!-- "Show What I Can Make" Button -->
+
+      <!-- CAN MAKE BUTTON -->
       <div class="can-make-section">
         <a th:href="@{/recipes(canMake='true')}" 
            th:unless="${filterActive}"
@@ -68,8 +68,7 @@
             (Using <span th:text="${totalIngredients}">0</span> ingredients)
           </span>
         </a>
-        
-        <!-- Show when filter is active -->
+
         <div th:if="${filterActive}" class="filter-active-banner">
           <span>✅ Showing <strong th:text="${canMakeCount}">0</strong> recipes you can make!</span>
           <a th:href="@{/recipes}" class="btn-clear-filter">Show All Recipes</a>
@@ -79,7 +78,8 @@
 
     <!-- RECIPE LIST -->
     <section id="recipeList">
-      <!-- Show message if no recipes found -->
+
+      <!-- No recipes found -->
       <div th:if="${#lists.isEmpty(recipes)}">
         <p th:if="${filterActive}">
           No recipes match your available ingredients. Try adding more ingredients to your pantry!
@@ -88,9 +88,10 @@
           No recipes found matching your criteria!
         </p>
       </div>
-    
-      <!-- Display each recipe -->
+
+      <!-- RECIPE LOOP START -->
       <div th:each="recipe : ${recipes}" class="recipe-card">
+
         <!-- Match Percentage Badge -->
         <div class="match-badge" 
              th:with="matchPercent=${matchPercentages.get(recipe.title)}"
@@ -100,81 +101,89 @@
           <span th:text="${matchPercent + '%'}">100%</span>
           <small>Match</small>
         </div>
-        
+
+        <!-- Recipe Basics -->
         <h3 th:text="${recipe.title}">Recipe Name</h3>
         <p><strong>Cuisine:</strong> <span th:text="${recipe.cuisineType}">Cuisine</span></p>
         <p><strong>Time Required:</strong> <span th:text="${recipe.timeRequired}">0</span> minutes</p>
         <p><strong>Source:</strong> <span th:text="${recipe.source}">N/A</span></p>
-        
-        <!-- Show dietary info -->
+
+        <!-- Dietary -->
         <p>
-          <strong>Dietary:</strong> 
+          <strong>Dietary:</strong>
           <span th:if="${recipe.vegan}" class="diet-tag">🌱 Vegan</span>
           <span th:if="${!recipe.vegan && recipe.vegetarian}" class="diet-tag">🥬 Vegetarian</span>
         </p>
-    
-        <!-- Ingredients list -->
+
+        <!-- Ingredients -->
         <h4>Ingredients:</h4>
         <ul class="ingredient-list">
           <li th:each="ingredient : ${recipe.ingredients}">
             <span th:text="${ingredient.quantity + ' ' + ingredient.unit + ' ' + ingredient.name}">
-              Ingredient goes here
+              Ingredient
             </span>
           </li>
         </ul>
-        
-        <!-- Show missing ingredients if any -->
-        <div th:if="${missingIngredients.get(recipe.title) != null && !missingIngredients.get(recipe.title).isEmpty()}" 
-             class="missing-ingredients">
+
+        <!-- Missing Ingredients -->
+        <div th:if="${missingIngredients.get(recipe.title) != null 
+                     && !missingIngredients.get(recipe.title).isEmpty()}"
+            class="missing-ingredients">
           <strong>Missing:</strong>
           <span th:each="missing, iterStat : ${missingIngredients.get(recipe.title)}"
                 class="missing-tag">
-            <span th:text="${missing}">Ingredient</span><span th:if="${!iterStat.last}">, </span>
+            <span th:text="${missing}">Missing Ingredient</span>
+            <span th:if="${!iterStat.last}">, </span>
           </span>
         </div>
-        
-        <!-- Instructions -->
-        <p><strong>Instructions:</strong> <span th:text="${recipe.instructions}">Instructions here</span></p>
-      </div>
-    </section>
 
-        <!-- Rating Section -->
+        <!-- Instructions -->
+        <p><strong>Instructions:</strong> 
+          <span th:text="${recipe.instructions}">Instructions here</span>
+        </p>
+
+        <!-- Rating -->
         <p>
           <strong>Rating:</strong>
-          <!-- If recipe has been rated, show the rating -->
+
+          <!-- Already rated -->
           <span th:if="${recipe.thumbsUpRating}" class="rating-display">👍 Thumbs Up</span>
           <span th:if="${recipe.thumbsDownRating}" class="rating-display">👎 Thumbs Down</span>
-          <!-- If recipe hasn't been rated, show rating buttons -->
+
+          <!-- Not yet rated -->
           <span th:if="${!recipe.thumbsUpRating && !recipe.thumbsDownRating}" class="rating-buttons">
-            <button type="button" class="btn-thumbs-up" th:attr="data-recipe-title=${recipe.title}" onclick="rateRecipe(this, true)">👍 Thumbs Up</button>
-            <button type="button" class="btn-thumbs-down" th:attr="data-recipe-title=${recipe.title}" onclick="rateRecipe(this, false)">👎 Thumbs Down</button>
+            <button type="button" class="btn-thumbs-up"
+                    th:attr="data-recipe-title=${recipe.title}"
+                    onclick="rateRecipe(this, true)">👍 Thumbs Up</button>
+            <button type="button" class="btn-thumbs-down"
+                    th:attr="data-recipe-title=${recipe.title}"
+                    onclick="rateRecipe(this, false)">👎 Thumbs Down</button>
           </span>
         </p>
 
-        <!-- Ingredients list -->
-        <h4>Ingredients:</h4>
-        <ul>
-          <li th:each="ingredient : ${recipe.ingredients}" 
-              th:text="${ingredient.quantity + ' ' + ingredient.unit + ' ' + ingredient.name}">
-              Ingredient goes here
-          </li>
-        </ul>
-        
-        <!-- Instructions -->
-        <p><strong>Instructions:</strong> <span th:text="${recipe.instructions}">Instructions here</span></p>
-
         <!-- Dates Used -->
-         <p><strong>Dates Used:</strong> 
-          <span th:text="${#lists.isEmpty(recipe.datesUsed) ? 'No date recorded' : #strings.listJoin(recipe.datesUsed, ', ')}">Dates Used</span>
-          <button type="button" class="btn-add-date" th:attr="data-recipe-title=${recipe.title}" onclick="addDateToRecipe(this)">+ Add Date</button>
+        <p>
+          <strong>Dates Used:</strong>
+          <span th:text="${#lists.isEmpty(recipe.datesUsed) 
+                          ? 'No date recorded' 
+                          : #strings.listJoin(recipe.datesUsed, ', ')}">
+            Dates Used
+          </span>
+          <button type="button" class="btn-add-date"
+                  th:attr="data-recipe-title=${recipe.title}"
+                  onclick="addDateToRecipe(this)">
+            + Add Date
+          </button>
         </p>
-      </div>
+
+      </div> <!-- RECIPE LOOP END -->
+
     </section>
 
-    <!-- FORM: Add a new recipe -->
+    <!-- ADD NEW RECIPE FORM -->
     <section id="addRecipeSection">
       <h2>Add a New Recipe</h2>
-      <!-- This form will POST to /api/recipes via JavaScript -->
+
       <form id="recipeForm">
         <div class="form-group">
           <label for="recipeTitle">Recipe Title</label>
@@ -197,14 +206,15 @@
             </select>
             <button type="button" class="remove-ingredient">Remove</button>
           </div>
+
           <button type="button" id="addIngredient">Add Another Ingredient</button>
         </div>
-        
+
         <div class="form-group">
           <label for="recipeInstructions">Instructions:</label>
           <textarea id="recipeInstructions" name="instructions" rows="5" required></textarea>
         </div>
-      
+
         <div class="form-group">
           <label for="recipeSource">Source:</label>
           <input type="text" id="recipeSource" name="source">
@@ -232,8 +242,10 @@
 
         <button type="submit">Save Recipe</button>
       </form>
+
       <div id="formMessage"></div>
     </section>
+
   </main>
 </body>
 </html>
