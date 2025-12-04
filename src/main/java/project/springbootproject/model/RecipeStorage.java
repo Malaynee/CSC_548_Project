@@ -181,7 +181,7 @@ public class RecipeStorage {
 
 // Get recipes that can be made with available ingredients
 public List<Recipe> getRecipesCanMake(List<Ingredient> availableIngredients) {
-    if (recipes == null || recipes.isEmpty() || availableIngredients == null) {
+    if (recipes == null || recipes.isEmpty() || availableIngredients == null || availableIngredients.isEmpty()) {
         return Collections.emptyList();
     }
     
