@@ -93,10 +93,11 @@
       <div th:each="recipe : ${recipes}" class="recipe-card">
         <!-- Match Percentage Badge -->
         <div class="match-badge" 
-             th:classappend="${matchPercentages.get(recipe) == 100 ? 'match-perfect' : 
-                             matchPercentages.get(recipe) >= 75 ? 'match-high' :
-                             matchPercentages.get(recipe) >= 50 ? 'match-medium' : 'match-low'}">
-          <span th:text="${matchPercentages.get(recipe) + '%'}">100%</span>
+             th:with="matchPercent=${matchPercentages.get(recipe.title)}"
+             th:classappend="${matchPercent == 100 ? 'match-perfect' : 
+                             matchPercent >= 75 ? 'match-high' :
+                             matchPercent >= 50 ? 'match-medium' : 'match-low'}">
+          <span th:text="${matchPercent + '%'}">100%</span>
           <small>Match</small>
         </div>
         
@@ -112,11 +113,10 @@
           <span th:if="${!recipe.vegan && recipe.vegetarian}" class="diet-tag">🥬 Vegetarian</span>
         </p>
     
-        <!-- Ingredients list with availability indicator -->
+        <!-- Ingredients list -->
         <h4>Ingredients:</h4>
         <ul class="ingredient-list">
-          <li th:each="ingredient : ${recipe.ingredients}" 
-              th:class="${recipe.canMakeWithIngredients(__${ingredientStorage.ingredients}__) ? 'ingredient-available' : ''}">
+          <li th:each="ingredient : ${recipe.ingredients}">
             <span th:text="${ingredient.quantity + ' ' + ingredient.unit + ' ' + ingredient.name}">
               Ingredient goes here
             </span>
@@ -124,9 +124,10 @@
         </ul>
         
         <!-- Show missing ingredients if any -->
-        <div th:if="${matchPercentages.get(recipe) < 100}" class="missing-ingredients">
+        <div th:if="${missingIngredients.get(recipe.title) != null && !missingIngredients.get(recipe.title).isEmpty()}" 
+             class="missing-ingredients">
           <strong>Missing:</strong>
-          <span th:each="missing, iterStat : ${recipe.getMissingIngredients(__${ingredientStorage.ingredients}__)}"
+          <span th:each="missing, iterStat : ${missingIngredients.get(recipe.title)}"
                 class="missing-tag">
             <span th:text="${missing}">Ingredient</span><span th:if="${!iterStat.last}">, </span>
           </span>
