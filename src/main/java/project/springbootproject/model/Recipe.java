@@ -3,8 +3,6 @@ package project.springbootproject.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Recipe {
     private String title;
@@ -171,62 +169,6 @@ public class Recipe {
             }
         }
         return true;
-    }
-    
-    // Checks if this recipe can be made w/ available ingredients
-    public boolean canMakeWithIngredients(List<Ingredient> availableIngredients) {
-        // Create a set of available ingredient names (case-insensitive)
-        Set<String> availableNames = availableIngredients.stream()
-            .map(ing -> ing.getName().toLowerCase().trim())
-            .collect(Collectors.toSet());
-        // Check if all recipe ingredients are available
-        for (Ingredient requiredIngredient : this.ingredients) {
-            String requiredName = requiredIngredient.getName().toLowerCase().trim();
-            
-            if (!availableNames.contains(requiredName)) {
-                return false; // Missing this ingredient
-            }
-        }
-        return true; // Has all ingredients!
-    }
-    
-    // Gets list of missing ingredients
-    public List<String> getMissingIngredients(List<Ingredient> availableIngredients) {
-        Set<String> availableNames = availableIngredients.stream()
-            .map(ing -> ing.getName().toLowerCase().trim())
-            .collect(Collectors.toSet());
-        
-        List<String> missing = new ArrayList<>();
-        
-        for (Ingredient requiredIngredient : this.ingredients) {
-            String requiredName = requiredIngredient.getName().toLowerCase().trim();
-            
-            if (!availableNames.contains(requiredName)) {
-                missing.add(requiredIngredient.getName());
-            }
-        }
-        return missing;
-    }
-    
-    // Calculates match percentage
-    public int getMatchPercentage(List<Ingredient> availableIngredients) {
-        if (this.ingredients == null || this.ingredients.isEmpty()) {
-            return 0;
-        }
-        Set<String> availableNames = availableIngredients.stream()
-            .map(ing -> ing.getName().toLowerCase().trim())
-            .collect(Collectors.toSet());
-        
-        int totalRequired = this.ingredients.size();
-        int matchCount = 0;
-        
-        for (Ingredient requiredIngredient : this.ingredients) {
-            String requiredName = requiredIngredient.getName().toLowerCase().trim();
-            if (availableNames.contains(requiredName)) {
-                matchCount++;
-            }
-        }
-        return (int) ((matchCount * 100.0) / totalRequired);
     }
 
     @Override
