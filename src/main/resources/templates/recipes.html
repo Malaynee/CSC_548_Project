@@ -35,7 +35,7 @@
       <!-- Basic search input -->
       <input type="text" placeholder="Search recipes..." id="recipeSearch">
       
-      <!-- FILTER FORM: Cuisine Type + Dietary Restrictions + Can Make -->
+      <!-- FILTER FORM: Cuisine Type + Dietary Restrictions -->
       <form method="get" th:action="@{/recipes}">
         <!-- Cuisine Filter Dropdown -->
         <select name="cuisine" id="cuisineFilter" onchange="this.form.submit()">
@@ -53,53 +53,18 @@
           <option value="vegetarian" th:selected="${selectedDiet == 'vegetarian'}">Vegetarian</option>
           <option value="vegan" th:selected="${selectedDiet == 'vegan'}">Vegan</option>
         </select>
-        
-        <!-- Hidden field to maintain canMake filter when other filters change -->
-        <input type="hidden" name="canMake" th:value="${canMakeFilter}">
       </form>
-      
-      <!-- "Show What I Can Make" Button -->
-      <div class="can-make-section">
-        <a th:href="@{/recipes(canMake='true')}" 
-           th:unless="${filterActive}"
-           class="btn-can-make">
-          🍳 Show What I Can Make
-          <span th:if="${totalIngredients > 0}" class="ingredient-count">
-            (Using <span th:text="${totalIngredients}">0</span> ingredients)
-          </span>
-        </a>
-        
-        <!-- Show when filter is active -->
-        <div th:if="${filterActive}" class="filter-active-banner">
-          <span>✅ Showing <strong th:text="${canMakeCount}">0</strong> recipes you can make!</span>
-          <a th:href="@{/recipes}" class="btn-clear-filter">Show All Recipes</a>
-        </div>
-      </div>
     </div>
 
     <!-- RECIPE LIST -->
     <section id="recipeList">
       <!-- Show message if no recipes found -->
       <div th:if="${#lists.isEmpty(recipes)}">
-        <p th:if="${filterActive}">
-          No recipes match your available ingredients. Try adding more ingredients to your pantry!
-        </p>
-        <p th:unless="${filterActive}">
-          No recipes found matching your criteria!
-        </p>
+        <p>No recipes found matching your criteria!</p>
       </div>
-    
+
       <!-- Display each recipe -->
       <div th:each="recipe : ${recipes}" class="recipe-card">
-        <!-- Match Percentage Badge -->
-        <div class="match-badge" 
-             th:classappend="${matchPercentages.get(recipe) == 100 ? 'match-perfect' : 
-                             matchPercentages.get(recipe) >= 75 ? 'match-high' :
-                             matchPercentages.get(recipe) >= 50 ? 'match-medium' : 'match-low'}">
-          <span th:text="${matchPercentages.get(recipe) + '%'}">100%</span>
-          <small>Match</small>
-        </div>
-        
         <h3 th:text="${recipe.title}">Recipe Name</h3>
         <p><strong>Cuisine:</strong> <span th:text="${recipe.cuisineType}">Cuisine</span></p>
         <p><strong>Time Required:</strong> <span th:text="${recipe.timeRequired}">0</span> minutes</p>
@@ -111,31 +76,6 @@
           <span th:if="${recipe.vegan}" class="diet-tag">🌱 Vegan</span>
           <span th:if="${!recipe.vegan && recipe.vegetarian}" class="diet-tag">🥬 Vegetarian</span>
         </p>
-    
-        <!-- Ingredients list with availability indicator -->
-        <h4>Ingredients:</h4>
-        <ul class="ingredient-list">
-          <li th:each="ingredient : ${recipe.ingredients}" 
-              th:class="${recipe.canMakeWithIngredients(__${ingredientStorage.ingredients}__) ? 'ingredient-available' : ''}">
-            <span th:text="${ingredient.quantity + ' ' + ingredient.unit + ' ' + ingredient.name}">
-              Ingredient goes here
-            </span>
-          </li>
-        </ul>
-        
-        <!-- Show missing ingredients if any -->
-        <div th:if="${matchPercentages.get(recipe) < 100}" class="missing-ingredients">
-          <strong>Missing:</strong>
-          <span th:each="missing, iterStat : ${recipe.getMissingIngredients(__${ingredientStorage.ingredients}__)}"
-                class="missing-tag">
-            <span th:text="${missing}">Ingredient</span><span th:if="${!iterStat.last}">, </span>
-          </span>
-        </div>
-        
-        <!-- Instructions -->
-        <p><strong>Instructions:</strong> <span th:text="${recipe.instructions}">Instructions here</span></p>
-      </div>
-    </section>
 
         <!-- Rating Section -->
         <p>
